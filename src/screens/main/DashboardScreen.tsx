@@ -145,20 +145,29 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ navigation }) 
 
       {/* Income and Expenses */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>This Month</Text>
+        <View style={styles.sectionHeader}>
+          <View style={styles.sectionTitleContainer}>
+            <Text style={styles.sectionTitle}>Monthly Summary</Text>
+            <Text style={styles.sectionSubtitle}>This Month</Text>
+          </View>
+        </View>
         <View style={styles.statsRow}>
           <StatCard
             title="Income"
             value={calculateMonthlyIncome()}
-            change={12.5}
+            changePercentage={12.5}
             icon="income"
+            trend="up"
+            sparklineData={[3200, 3500, 3800, 4200, 4100, 4500, 4800]}
             onPress={() => navigation.navigate('TransactionDetails', { transactionId: 'income' })}
           />
           <StatCard
             title="Expenses"
             value={calculateMonthlySpending()}
-            change={-8.2}
+            changePercentage={-8.2}
             icon="expense"
+            trend="down"
+            sparklineData={[2800, 3200, 2900, 3100, 2800, 2600, 2400]}
             onPress={() => navigation.navigate('TransactionDetails', { transactionId: 'expenses' })}
           />
         </View>
@@ -277,50 +286,65 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: 20,
-    paddingTop: 20,
-    paddingBottom: 16,
+    paddingTop: 24,
+    paddingBottom: 20,
     backgroundColor: '#FFFFFF',
   },
   greeting: {
-    fontSize: 28,
-    fontWeight: '700',
+    fontSize: 32,
+    fontWeight: '800',
     color: '#1A1A1A',
-    marginBottom: 4,
+    marginBottom: 6,
+    letterSpacing: -0.5,
   },
   subtitle: {
     fontSize: 16,
-    color: '#757575',
+    color: '#6B7280',
+    fontWeight: '500',
   },
   balanceSection: {
     paddingHorizontal: 20,
-    paddingVertical: 16,
+    paddingVertical: 24,
     backgroundColor: '#FFFFFF',
+    borderBottomWidth: 1,
+    borderBottomColor: '#F3F4F6',
   },
   section: {
     paddingHorizontal: 20,
-    paddingVertical: 16,
+    paddingVertical: 24,
     backgroundColor: '#FFFFFF',
-    marginTop: 8,
+    marginTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: '#F3F4F6',
   },
   sectionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: 20,
+  },
+  sectionTitleContainer: {
+    flexDirection: 'column',
   },
   sectionTitle: {
-    fontSize: 20,
-    fontWeight: '600',
+    fontSize: 22,
+    fontWeight: '700',
     color: '#1A1A1A',
+    marginBottom: 2,
+  },
+  sectionSubtitle: {
+    fontSize: 14,
+    color: '#6B7280',
+    fontWeight: '500',
   },
   seeAll: {
     fontSize: 14,
-    color: '#2E7D32',
+    color: '#10B981',
     fontWeight: '600',
   },
   statsRow: {
     flexDirection: 'row',
-    gap: 12,
+    gap: 16,
   },
   quickActions: {
     flexDirection: 'row',
