@@ -1,0 +1,616 @@
+{
+    "primary": [
+      {
+        "code": "USD",
+        "name": "US Dollar",
+        "symbol": "$",
+        "flag": "🇺🇸",
+        "decimals": 2,
+        "popular": true
+      },
+      {
+        "code": "EUR",
+        "name": "Euro",
+        "symbol": "€",
+        "flag": "🇪🇺",
+        "decimals": 2,
+        "popular": true
+      },
+      {
+        "code": "GBP",
+        "name": "British Pound",
+        "symbol": "£",
+        "flag": "🇬🇧",
+        "decimals": 2,
+        "popular": true
+      },
+      {
+        "code": "JPY",
+        "name": "Japanese Yen",
+        "symbol": "¥",
+        "flag": "🇯🇵",
+        "decimals": 0,
+        "popular": true
+      },
+      {
+        "code": "CAD",
+        "name": "Canadian Dollar",
+        "symbol": "C$",
+        "flag": "🇨🇦",
+        "decimals": 2,
+        "popular": true
+      },
+      {
+        "code": "AUD",
+        "name": "Australian Dollar",
+        "symbol": "A$",
+        "flag": "🇦🇺",
+        "decimals": 2,
+        "popular": true
+      },
+      {
+        "code": "CHF",
+        "name": "Swiss Franc",
+        "symbol": "CHF",
+        "flag": "🇨🇭",
+        "decimals": 2,
+        "popular": true
+      },
+      {
+        "code": "CNY",
+        "name": "Chinese Yuan",
+        "symbol": "¥",
+        "flag": "🇨🇳",
+        "decimals": 2,
+        "popular": true
+      }
+    ],
+    "african": [
+      {
+        "code": "NGN",
+        "name": "Nigerian Naira",
+        "symbol": "₦",
+        "flag": "🇳🇬",
+        "decimals": 2,
+        "popular": true
+      },
+      {
+        "code": "ZAR",
+        "name": "South African Rand",
+        "symbol": "R",
+        "flag": "🇿🇦",
+        "decimals": 2,
+        "popular": true
+      },
+      {
+        "code": "KES",
+        "name": "Kenyan Shilling",
+        "symbol": "KSh",
+        "flag": "🇰🇪",
+        "decimals": 2,
+        "popular": true
+      },
+      {
+        "code": "GHS",
+        "name": "Ghanaian Cedi",
+        "symbol": "₵",
+        "flag": "🇬🇭",
+        "decimals": 2,
+        "popular": true
+      },
+      {
+        "code": "EGP",
+        "name": "Egyptian Pound",
+        "symbol": "£",
+        "flag": "🇪🇬",
+        "decimals": 2,
+        "popular": true
+      },
+      {
+        "code": "MAD",
+        "name": "Moroccan Dirham",
+        "symbol": "MAD",
+        "flag": "🇲🇦",
+        "decimals": 2,
+        "popular": false
+      },
+      {
+        "code": "TND",
+        "name": "Tunisian Dinar",
+        "symbol": "د.ت",
+        "flag": "🇹🇳",
+        "decimals": 3,
+        "popular": false
+      },
+      {
+        "code": "UGX",
+        "name": "Ugandan Shilling",
+        "symbol": "USh",
+        "flag": "🇺🇬",
+        "decimals": 0,
+        "popular": false
+      },
+      {
+        "code": "TZS",
+        "name": "Tanzanian Shilling",
+        "symbol": "TSh",
+        "flag": "🇹🇿",
+        "decimals": 2,
+        "popular": false
+      },
+      {
+        "code": "RWF",
+        "name": "Rwandan Franc",
+        "symbol": "RF",
+        "flag": "🇷🇼",
+        "decimals": 0,
+        "popular": false
+      },
+      {
+        "code": "ETB",
+        "name": "Ethiopian Birr",
+        "symbol": "Br",
+        "flag": "🇪🇹",
+        "decimals": 2,
+        "popular": false
+      },
+      {
+        "code": "XOF",
+        "name": "West African CFA Franc",
+        "symbol": "CFA",
+        "flag": "🌍",
+        "decimals": 0,
+        "popular": false
+      },
+      {
+        "code": "XAF",
+        "name": "Central African CFA Franc",
+        "symbol": "FCFA",
+        "flag": "🌍",
+        "decimals": 0,
+        "popular": false
+      }
+    ],
+    "asian": [
+      {
+        "code": "INR",
+        "name": "Indian Rupee",
+        "symbol": "₹",
+        "flag": "🇮🇳",
+        "decimals": 2,
+        "popular": true
+      },
+      {
+        "code": "KRW",
+        "name": "South Korean Won",
+        "symbol": "₩",
+        "flag": "🇰🇷",
+        "decimals": 0,
+        "popular": true
+      },
+      {
+        "code": "SGD",
+        "name": "Singapore Dollar",
+        "symbol": "S$",
+        "flag": "🇸🇬",
+        "decimals": 2,
+        "popular": true
+      },
+      {
+        "code": "HKD",
+        "name": "Hong Kong Dollar",
+        "symbol": "HK$",
+        "flag": "🇭🇰",
+        "decimals": 2,
+        "popular": true
+      },
+      {
+        "code": "THB",
+        "name": "Thai Baht",
+        "symbol": "฿",
+        "flag": "🇹🇭",
+        "decimals": 2,
+        "popular": true
+      },
+      {
+        "code": "MYR",
+        "name": "Malaysian Ringgit",
+        "symbol": "RM",
+        "flag": "🇲🇾",
+        "decimals": 2,
+        "popular": true
+      },
+      {
+        "code": "IDR",
+        "name": "Indonesian Rupiah",
+        "symbol": "Rp",
+        "flag": "🇮🇩",
+        "decimals": 0,
+        "popular": true
+      },
+      {
+        "code": "PHP",
+        "name": "Philippine Peso",
+        "symbol": "₱",
+        "flag": "🇵🇭",
+        "decimals": 2,
+        "popular": true
+      },
+      {
+        "code": "VND",
+        "name": "Vietnamese Dong",
+        "symbol": "₫",
+        "flag": "🇻🇳",
+        "decimals": 0,
+        "popular": true
+      },
+      {
+        "code": "PKR",
+        "name": "Pakistani Rupee",
+        "symbol": "₨",
+        "flag": "🇵🇰",
+        "decimals": 2,
+        "popular": false
+      },
+      {
+        "code": "BDT",
+        "name": "Bangladeshi Taka",
+        "symbol": "৳",
+        "flag": "🇧🇩",
+        "decimals": 2,
+        "popular": false
+      },
+      {
+        "code": "LKR",
+        "name": "Sri Lankan Rupee",
+        "symbol": "Rs",
+        "flag": "🇱🇰",
+        "decimals": 2,
+        "popular": false
+      },
+      {
+        "code": "NPR",
+        "name": "Nepalese Rupee",
+        "symbol": "Rs",
+        "flag": "🇳🇵",
+        "decimals": 2,
+        "popular": false
+      }
+    ],
+    "european": [
+      {
+        "code": "NOK",
+        "name": "Norwegian Krone",
+        "symbol": "kr",
+        "flag": "🇳🇴",
+        "decimals": 2,
+        "popular": true
+      },
+      {
+        "code": "SEK",
+        "name": "Swedish Krona",
+        "symbol": "kr",
+        "flag": "🇸🇪",
+        "decimals": 2,
+        "popular": true
+      },
+      {
+        "code": "DKK",
+        "name": "Danish Krone",
+        "symbol": "kr",
+        "flag": "🇩🇰",
+        "decimals": 2,
+        "popular": true
+      },
+      {
+        "code": "PLN",
+        "name": "Polish Zloty",
+        "symbol": "zł",
+        "flag": "🇵🇱",
+        "decimals": 2,
+        "popular": true
+      },
+      {
+        "code": "CZK",
+        "name": "Czech Koruna",
+        "symbol": "Kč",
+        "flag": "🇨🇿",
+        "decimals": 2,
+        "popular": true
+      },
+      {
+        "code": "HUF",
+        "name": "Hungarian Forint",
+        "symbol": "Ft",
+        "flag": "🇭🇺",
+        "decimals": 0,
+        "popular": false
+      },
+      {
+        "code": "RUB",
+        "name": "Russian Ruble",
+        "symbol": "₽",
+        "flag": "🇷🇺",
+        "decimals": 2,
+        "popular": false
+      },
+      {
+        "code": "TRY",
+        "name": "Turkish Lira",
+        "symbol": "₺",
+        "flag": "🇹🇷",
+        "decimals": 2,
+        "popular": false
+      },
+      {
+        "code": "UAH",
+        "name": "Ukrainian Hryvnia",
+        "symbol": "₴",
+        "flag": "🇺🇦",
+        "decimals": 2,
+        "popular": false
+      },
+      {
+        "code": "RON",
+        "name": "Romanian Leu",
+        "symbol": "lei",
+        "flag": "🇷🇴",
+        "decimals": 2,
+        "popular": false
+      }
+    ],
+    "americas": [
+      {
+        "code": "BRL",
+        "name": "Brazilian Real",
+        "symbol": "R$",
+        "flag": "🇧🇷",
+        "decimals": 2,
+        "popular": true
+      },
+      {
+        "code": "MXN",
+        "name": "Mexican Peso",
+        "symbol": "$",
+        "flag": "🇲🇽",
+        "decimals": 2,
+        "popular": true
+      },
+      {
+        "code": "ARS",
+        "name": "Argentine Peso",
+        "symbol": "$",
+        "flag": "🇦🇷",
+        "decimals": 2,
+        "popular": true
+      },
+      {
+        "code": "CLP",
+        "name": "Chilean Peso",
+        "symbol": "$",
+        "flag": "🇨🇱",
+        "decimals": 0,
+        "popular": false
+      },
+      {
+        "code": "COP",
+        "name": "Colombian Peso",
+        "symbol": "$",
+        "flag": "🇨🇴",
+        "decimals": 0,
+        "popular": false
+      },
+      {
+        "code": "PEN",
+        "name": "Peruvian Sol",
+        "symbol": "S/",
+        "flag": "🇵🇪",
+        "decimals": 2,
+        "popular": false
+      },
+      {
+        "code": "UYU",
+        "name": "Uruguayan Peso",
+        "symbol": "$",
+        "flag": "🇺🇾",
+        "decimals": 2,
+        "popular": false
+      },
+      {
+        "code": "VES",
+        "name": "Venezuelan Bolívar",
+        "symbol": "Bs",
+        "flag": "🇻🇪",
+        "decimals": 2,
+        "popular": false
+      }
+    ],
+    "middle_east": [
+      {
+        "code": "SAR",
+        "name": "Saudi Riyal",
+        "symbol": "﷼",
+        "flag": "🇸🇦",
+        "decimals": 2,
+        "popular": true
+      },
+      {
+        "code": "AED",
+        "name": "UAE Dirham",
+        "symbol": "د.إ",
+        "flag": "🇦🇪",
+        "decimals": 2,
+        "popular": true
+      },
+      {
+        "code": "ILS",
+        "name": "Israeli Shekel",
+        "symbol": "₪",
+        "flag": "🇮🇱",
+        "decimals": 2,
+        "popular": true
+      },
+      {
+        "code": "QAR",
+        "name": "Qatari Riyal",
+        "symbol": "﷼",
+        "flag": "🇶🇦",
+        "decimals": 2,
+        "popular": false
+      },
+      {
+        "code": "KWD",
+        "name": "Kuwaiti Dinar",
+        "symbol": "د.ك",
+        "flag": "🇰🇼",
+        "decimals": 3,
+        "popular": false
+      },
+      {
+        "code": "BHD",
+        "name": "Bahraini Dinar",
+        "symbol": "د.ب",
+        "flag": "🇧🇭",
+        "decimals": 3,
+        "popular": false
+      },
+      {
+        "code": "OMR",
+        "name": "Omani Rial",
+        "symbol": "﷼",
+        "flag": "🇴🇲",
+        "decimals": 3,
+        "popular": false
+      },
+      {
+        "code": "JOD",
+        "name": "Jordanian Dinar",
+        "symbol": "د.ا",
+        "flag": "🇯🇴",
+        "decimals": 3,
+        "popular": false
+      },
+      {
+        "code": "LBP",
+        "name": "Lebanese Pound",
+        "symbol": "ل.ل",
+        "flag": "🇱🇧",
+        "decimals": 2,
+        "popular": false
+      },
+      {
+        "code": "IRR",
+        "name": "Iranian Rial",
+        "symbol": "﷼",
+        "flag": "🇮🇷",
+        "decimals": 0,
+        "popular": false
+      }
+    ],
+    "crypto": [
+      {
+        "code": "BTC",
+        "name": "Bitcoin",
+        "symbol": "₿",
+        "flag": "🟠",
+        "decimals": 8,
+        "popular": true
+      },
+      {
+        "code": "ETH",
+        "name": "Ethereum",
+        "symbol": "Ξ",
+        "flag": "🔵",
+        "decimals": 8,
+        "popular": true
+      },
+      {
+        "code": "USDT",
+        "name": "Tether",
+        "symbol": "₮",
+        "flag": "🟢",
+        "decimals": 6,
+        "popular": true
+      },
+      {
+        "code": "USDC",
+        "name": "USD Coin",
+        "symbol": "$",
+        "flag": "🔵",
+        "decimals": 6,
+        "popular": true
+      },
+      {
+        "code": "ADA",
+        "name": "Cardano",
+        "symbol": "₳",
+        "flag": "🔵",
+        "decimals": 6,
+        "popular": false
+      },
+      {
+        "code": "DOT",
+        "name": "Polkadot",
+        "symbol": "●",
+        "flag": "🔴",
+        "decimals": 10,
+        "popular": false
+      },
+      {
+        "code": "LINK",
+        "name": "Chainlink",
+        "symbol": "⬟",
+        "flag": "🔵",
+        "decimals": 8,
+        "popular": false
+      },
+      {
+        "code": "SOL",
+        "name": "Solana",
+        "symbol": "◎",
+        "flag": "🟣",
+        "decimals": 9,
+        "popular": false
+      }
+    ],
+    "formatting": {
+      "defaults": {
+        "thousandSeparator": ",",
+        "decimalSeparator": ".",
+        "currencyPosition": "before",
+        "negativeFormat": "-{symbol}{amount}"
+      },
+      "locales": {
+        "US": {
+          "thousandSeparator": ",",
+          "decimalSeparator": ".",
+          "currencyPosition": "before",
+          "negativeFormat": "-{symbol}{amount}"
+        },
+        "EU": {
+          "thousandSeparator": ".",
+          "decimalSeparator": ",",
+          "currencyPosition": "after",
+          "negativeFormat": "-{amount} {symbol}"
+        },
+        "UK": {
+          "thousandSeparator": ",",
+          "decimalSeparator": ".",
+          "currencyPosition": "before",
+          "negativeFormat": "-{symbol}{amount}"
+        },
+        "IN": {
+          "thousandSeparator": ",",
+          "decimalSeparator": ".",
+          "currencyPosition": "before",
+          "negativeFormat": "-{symbol}{amount}"
+        },
+        "NG": {
+          "thousandSeparator": ",",
+          "decimalSeparator": ".",
+          "currencyPosition": "before",
+          "negativeFormat": "-{symbol}{amount}"
+        }
+      }
+    }
+  }

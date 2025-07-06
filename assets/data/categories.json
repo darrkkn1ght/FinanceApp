@@ -1,0 +1,313 @@
+{
+    "income": [
+      {
+        "id": "salary",
+        "name": "Salary",
+        "icon": "💼",
+        "color": "#4CAF50",
+        "description": "Regular employment income"
+      },
+      {
+        "id": "freelance",
+        "name": "Freelance",
+        "icon": "💻",
+        "color": "#2196F3",
+        "description": "Independent contractor income"
+      },
+      {
+        "id": "business",
+        "name": "Business",
+        "icon": "🏢",
+        "color": "#FF9800",
+        "description": "Business revenue and profits"
+      },
+      {
+        "id": "investment",
+        "name": "Investment",
+        "icon": "📈",
+        "color": "#9C27B0",
+        "description": "Dividends, interest, and capital gains"
+      },
+      {
+        "id": "rental",
+        "name": "Rental",
+        "icon": "🏠",
+        "color": "#795548",
+        "description": "Property rental income"
+      },
+      {
+        "id": "bonus",
+        "name": "Bonus",
+        "icon": "🎁",
+        "color": "#E91E63",
+        "description": "Work bonuses and incentives"
+      },
+      {
+        "id": "refund",
+        "name": "Refund",
+        "icon": "↩️",
+        "color": "#00BCD4",
+        "description": "Tax refunds and returns"
+      },
+      {
+        "id": "gift",
+        "name": "Gift",
+        "icon": "🎉",
+        "color": "#FFEB3B",
+        "description": "Monetary gifts received"
+      },
+      {
+        "id": "other_income",
+        "name": "Other Income",
+        "icon": "💰",
+        "color": "#607D8B",
+        "description": "Miscellaneous income sources"
+      }
+    ],
+    "expense": [
+      {
+        "id": "dining",
+        "name": "Dining",
+        "icon": "🍽️",
+        "color": "#FF5722",
+        "description": "Restaurants and food delivery",
+        "subcategories": ["restaurants", "fast_food", "coffee", "delivery"]
+      },
+      {
+        "id": "groceries",
+        "name": "Groceries",
+        "icon": "🛒",
+        "color": "#4CAF50",
+        "description": "Food and household items",
+        "subcategories": ["supermarket", "organic", "bulk_shopping"]
+      },
+      {
+        "id": "transportation",
+        "name": "Transportation",
+        "icon": "🚗",
+        "color": "#2196F3",
+        "description": "Vehicle and travel expenses",
+        "subcategories": ["gas", "parking", "public_transport", "rideshare", "car_maintenance"]
+      },
+      {
+        "id": "entertainment",
+        "name": "Entertainment",
+        "icon": "🎬",
+        "color": "#9C27B0",
+        "description": "Movies, games, and leisure",
+        "subcategories": ["movies", "streaming", "games", "concerts", "hobbies"]
+      },
+      {
+        "id": "shopping",
+        "name": "Shopping",
+        "icon": "🛍️",
+        "color": "#E91E63",
+        "description": "Retail and personal purchases",
+        "subcategories": ["clothing", "electronics", "books", "gifts", "online_shopping"]
+      },
+      {
+        "id": "utilities",
+        "name": "Utilities",
+        "icon": "⚡",
+        "color": "#FF9800",
+        "description": "Monthly utility bills",
+        "subcategories": ["electricity", "water", "gas", "internet", "phone", "trash"]
+      },
+      {
+        "id": "rent",
+        "name": "Rent/Mortgage",
+        "icon": "🏠",
+        "color": "#795548",
+        "description": "Housing payments",
+        "subcategories": ["rent", "mortgage", "property_tax", "hoa_fees"]
+      },
+      {
+        "id": "healthcare",
+        "name": "Healthcare",
+        "icon": "🏥",
+        "color": "#F44336",
+        "description": "Medical and health expenses",
+        "subcategories": ["doctor", "pharmacy", "insurance", "dental", "vision"]
+      },
+      {
+        "id": "education",
+        "name": "Education",
+        "icon": "📚",
+        "color": "#3F51B5",
+        "description": "Learning and development",
+        "subcategories": ["tuition", "books", "courses", "certification", "training"]
+      },
+      {
+        "id": "fitness",
+        "name": "Fitness",
+        "icon": "💪",
+        "color": "#4CAF50",
+        "description": "Health and fitness activities",
+        "subcategories": ["gym", "yoga", "sports", "supplements", "equipment"]
+      },
+      {
+        "id": "travel",
+        "name": "Travel",
+        "icon": "✈️",
+        "color": "#00BCD4",
+        "description": "Vacation and business travel",
+        "subcategories": ["flights", "hotels", "rental_car", "activities", "meals"]
+      },
+      {
+        "id": "insurance",
+        "name": "Insurance",
+        "icon": "🛡️",
+        "color": "#607D8B",
+        "description": "Insurance premiums",
+        "subcategories": ["health", "auto", "home", "life", "disability"]
+      },
+      {
+        "id": "subscriptions",
+        "name": "Subscriptions",
+        "icon": "📱",
+        "color": "#9C27B0",
+        "description": "Recurring service payments",
+        "subcategories": ["streaming", "software", "magazines", "apps", "cloud_storage"]
+      },
+      {
+        "id": "personal_care",
+        "name": "Personal Care",
+        "icon": "💅",
+        "color": "#E91E63",
+        "description": "Beauty and personal hygiene",
+        "subcategories": ["haircut", "skincare", "cosmetics", "salon", "spa"]
+      },
+      {
+        "id": "pets",
+        "name": "Pets",
+        "icon": "🐕",
+        "color": "#FF5722",
+        "description": "Pet care and supplies",
+        "subcategories": ["food", "vet", "grooming", "toys", "supplies"]
+      },
+      {
+        "id": "charity",
+        "name": "Charity",
+        "icon": "💝",
+        "color": "#4CAF50",
+        "description": "Donations and charitable giving",
+        "subcategories": ["donations", "religious", "fundraising", "volunteering"]
+      },
+      {
+        "id": "taxes",
+        "name": "Taxes",
+        "icon": "📊",
+        "color": "#795548",
+        "description": "Tax payments and fees",
+        "subcategories": ["income_tax", "property_tax", "sales_tax", "penalties"]
+      },
+      {
+        "id": "fees",
+        "name": "Bank Fees",
+        "icon": "🏦",
+        "color": "#607D8B",
+        "description": "Banking and financial fees",
+        "subcategories": ["atm_fees", "overdraft", "monthly_fee", "wire_transfer"]
+      },
+      {
+        "id": "other_expense",
+        "name": "Other Expense",
+        "icon": "❓",
+        "color": "#9E9E9E",
+        "description": "Miscellaneous expenses",
+        "subcategories": ["uncategorized", "miscellaneous"]
+      }
+    ],
+    "budgetCategories": [
+      {
+        "id": "needs",
+        "name": "Needs (50%)",
+        "percentage": 50,
+        "color": "#4CAF50",
+        "description": "Essential expenses like housing, utilities, groceries",
+        "categories": ["rent", "utilities", "groceries", "healthcare", "transportation", "insurance"]
+      },
+      {
+        "id": "wants",
+        "name": "Wants (30%)",
+        "percentage": 30,
+        "color": "#FF9800",
+        "description": "Non-essential but desired purchases",
+        "categories": ["dining", "entertainment", "shopping", "travel", "subscriptions", "personal_care"]
+      },
+      {
+        "id": "savings",
+        "name": "Savings (20%)",
+        "percentage": 20,
+        "color": "#2196F3",
+        "description": "Emergency fund and long-term savings",
+        "categories": ["emergency_fund", "retirement", "investments", "goals"]
+      }
+    ],
+    "investmentCategories": [
+      {
+        "id": "stocks",
+        "name": "Stocks",
+        "icon": "📈",
+        "color": "#4CAF50",
+        "riskLevel": "medium",
+        "description": "Individual company shares"
+      },
+      {
+        "id": "etfs",
+        "name": "ETFs",
+        "icon": "📊",
+        "color": "#2196F3",
+        "riskLevel": "low",
+        "description": "Exchange-traded funds"
+      },
+      {
+        "id": "mutual_funds",
+        "name": "Mutual Funds",
+        "icon": "🏦",
+        "color": "#FF9800",
+        "riskLevel": "low",
+        "description": "Professionally managed funds"
+      },
+      {
+        "id": "bonds",
+        "name": "Bonds",
+        "icon": "🏛️",
+        "color": "#795548",
+        "riskLevel": "low",
+        "description": "Government and corporate bonds"
+      },
+      {
+        "id": "crypto",
+        "name": "Cryptocurrency",
+        "icon": "₿",
+        "color": "#FF5722",
+        "riskLevel": "high",
+        "description": "Digital currencies"
+      },
+      {
+        "id": "real_estate",
+        "name": "Real Estate",
+        "icon": "🏠",
+        "color": "#9C27B0",
+        "riskLevel": "medium",
+        "description": "Property investments"
+      },
+      {
+        "id": "commodities",
+        "name": "Commodities",
+        "icon": "🥇",
+        "color": "#FFEB3B",
+        "riskLevel": "high",
+        "description": "Gold, oil, and other commodities"
+      },
+      {
+        "id": "cash",
+        "name": "Cash/Savings",
+        "icon": "💰",
+        "color": "#607D8B",
+        "riskLevel": "low",
+        "description": "High-yield savings and CDs"
+      }
+    ]
+  }
