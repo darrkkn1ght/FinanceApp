@@ -1,6 +1,17 @@
 // src/services/api/authService.ts
+declare const __DEV__: boolean;
+
 import { mockUserData } from '../mock/mockUserData';
 import { User, ServiceResponse, NotificationSettings } from '../../types';
+
+// Simple delay function without setTimeout
+const delay = (ms: number) => new Promise(resolve => {
+  const start = Date.now();
+  while (Date.now() - start < ms) {
+    // Busy wait - simple alternative to setTimeout
+  }
+  resolve(undefined);
+});
 
 export interface LoginRequest {
   email: string;
@@ -61,7 +72,7 @@ class AuthService {
     try {
       if (this.useMockData) {
         // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await delay(1000);
 
         // Mock validation
         if (!credentials.email || !credentials.password) {
@@ -105,7 +116,7 @@ class AuthService {
     try {
       if (this.useMockData) {
         // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 1200));
+        await delay(1200);
 
         // Mock validation
         if (!userData.email || !userData.password || !userData.firstName || !userData.lastName) {
@@ -182,7 +193,7 @@ class AuthService {
     try {
       if (this.useMockData) {
         // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 500));
+        await delay(500);
 
         // Mock logout success
         return {
@@ -206,7 +217,7 @@ class AuthService {
     try {
       if (this.useMockData) {
         // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 300));
+        await delay(300);
 
         if (!refreshToken || refreshToken !== this.mockRefreshToken) {
           throw new Error('Invalid refresh token');
@@ -240,7 +251,7 @@ class AuthService {
     try {
       if (this.useMockData) {
         // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 800));
+        await delay(800);
 
         if (!request.email || !request.email.includes('@')) {
           throw new Error('Valid email is required');
@@ -268,7 +279,7 @@ class AuthService {
     try {
       if (this.useMockData) {
         // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 600));
+        await delay(600);
 
         if (!request.currentPassword || !request.newPassword) {
           throw new Error('Current and new passwords are required');
@@ -304,7 +315,7 @@ class AuthService {
     try {
       if (this.useMockData) {
         // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 700));
+        await delay(700);
 
         const updatedUser: User = {
           ...mockUserData,
@@ -347,7 +358,7 @@ class AuthService {
     try {
       if (this.useMockData) {
         // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 500));
+        await delay(500);
 
         if (!request.email || !request.verificationCode) {
           throw new Error('Email and verification code are required');
@@ -379,7 +390,7 @@ class AuthService {
     try {
       if (this.useMockData) {
         // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 400));
+        await delay(400);
 
         if (!email || !email.includes('@')) {
           throw new Error('Valid email is required');
@@ -407,7 +418,7 @@ class AuthService {
     try {
       if (this.useMockData) {
         // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 200));
+        await delay(200);
 
         return {
           data: mockUserData,

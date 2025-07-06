@@ -44,7 +44,7 @@ export interface CurrencyFormatOptions {
       });
   
       return formatter.format(amount);
-    } catch (error) {
+    } catch (_error) {
       // Fallback formatting
       const sign = amount < 0 ? '-' : '';
       const absAmount = Math.abs(amount);
@@ -117,7 +117,7 @@ export interface CurrencyFormatOptions {
       });
   
       return formatter.format(formattedValue) + suffix;
-    } catch (error) {
+    } catch (_error) {
       return value.toFixed(decimals);
     }
   };
@@ -134,7 +134,7 @@ export interface CurrencyFormatOptions {
       });
       
       return formatter.format(value / 100);
-    } catch (error) {
+    } catch (_error) {
       return `${value.toFixed(decimals)}%`;
     }
   };

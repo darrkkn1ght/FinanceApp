@@ -251,7 +251,7 @@ export const GoalsScreen: React.FC<GoalsScreenProps> = ({ navigation: _navigatio
   const renderGoalItem = (goal: BudgetGoal) => (
     <GoalCard
       key={goal.id}
-      id={goal.id}
+      _id={goal.id}
       title={goal.title}
       targetAmount={goal.targetAmount}
       currentAmount={goal.currentAmount}

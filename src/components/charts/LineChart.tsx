@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity, PanResponder } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity, ViewStyle } from 'react-native';
 import { LineChart as RNLineChart } from 'react-native-chart-kit';
 
 interface LineChartDataPoint {
@@ -31,7 +31,7 @@ interface LineChartProps {
   withOuterLines?: boolean;
   withVerticalLines?: boolean;
   withHorizontalLines?: boolean;
-  style?: any;
+  style?: ViewStyle;
 }
 
 export const LineChart: React.FC<LineChartProps> = ({
@@ -41,8 +41,8 @@ export const LineChart: React.FC<LineChartProps> = ({
   color = '#2196F3',
   showGrid = true,
   showDots = true,
-  showLabels = true,
-  animated = false,
+  showLabels: _showLabels = true,
+  animated: _animated = false,
   onDataPointPress,
   title,
   subtitle,
@@ -59,20 +59,8 @@ export const LineChart: React.FC<LineChartProps> = ({
   style,
 }) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  const [animationProgress, setAnimationProgress] = useState(0);
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    if (animated) {
-      const timer = setTimeout(() => {
-        setAnimationProgress(1);
-      }, 100);
-      return () => clearTimeout(timer);
-    } else {
-      setAnimationProgress(1);
-    }
-  }, [animated]);
 
   const handleDataPointPress = (dataPoint: { index: number; value: number; x: number; y: number }) => {
     setSelectedIndex(dataPoint.index);
@@ -83,10 +71,7 @@ export const LineChart: React.FC<LineChartProps> = ({
       onDataPointPress(data[dataPoint.index], dataPoint.index);
     }
 
-    // Hide tooltip after 3 seconds
-    setTimeout(() => {
-      setTooltipVisible(false);
-    }, 3000);
+    // Tooltip will be hidden when user selects another point or clears selection
   };
 
   const chartData = {

@@ -381,7 +381,7 @@ export const ComponentTestScreen: React.FC = () => {
           {mockGoals.map((goal, index) => (
             <GoalCard
               key={index}
-              id={goal.id}
+              _id={goal.id}
               title={goal.title}
               targetAmount={goal.targetAmount}
               currentAmount={goal.currentAmount}

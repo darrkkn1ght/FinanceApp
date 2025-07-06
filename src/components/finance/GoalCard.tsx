@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 interface GoalCardProps {
-  id: string;
+  _id: string;
   title: string;
   targetAmount: number;
   currentAmount: number;
@@ -15,7 +15,7 @@ interface GoalCardProps {
 }
 
 export const GoalCard: React.FC<GoalCardProps> = ({
-  id,
+  _id,
   title,
   targetAmount,
   currentAmount,

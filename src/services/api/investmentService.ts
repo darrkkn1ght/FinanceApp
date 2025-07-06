@@ -49,7 +49,7 @@ export interface InvestmentAlert {
 }
 
 class InvestmentService {
-  private useMockData = __DEV__;
+  private useMockData = true; // Use mock data for development
 
   async getInvestments(
     filters?: InvestmentFilters
@@ -256,7 +256,7 @@ class InvestmentService {
           const emptyPerformance: InvestmentPerformance = {
             totalValue: 0,
             totalGain: 0,
-            totalGainPercent: 0,
+            totalGainPercent: 0,  
             dayChange: 0,
             dayChangePercent: 0,
             bestPerformer: {} as Investment,
@@ -554,7 +554,7 @@ class InvestmentService {
     }
   }
 
-  async deleteInvestmentAlert(alertId: string): Promise<ServiceResponse<boolean>> {
+  async deleteInvestmentAlert(_alertId: string): Promise<ServiceResponse<boolean>> {
     try {
       if (this.useMockData) {
         // Mock alert deletion
@@ -742,7 +742,7 @@ class InvestmentService {
     }
   }
 
-  async removeFromWatchlist(symbol: string): Promise<ServiceResponse<boolean>> {
+  async removeFromWatchlist(_symbol: string): Promise<ServiceResponse<boolean>> {
     try {
       if (this.useMockData) {
         // Mock implementation - in real app, this would remove from watchlist

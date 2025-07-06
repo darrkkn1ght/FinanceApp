@@ -17,7 +17,7 @@ export interface AIInsight {
       potentialSavings: number;
       timeframe: string;
     };
-    data: Record<string, any>;
+    data: Record<string, unknown>;
     createdAt: string; // ISO date string
     isRead: boolean;
     isActioned: boolean;

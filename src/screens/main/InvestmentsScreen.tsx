@@ -25,7 +25,7 @@ interface InvestmentsScreenProps {
   navigation: NavigationProp<TabStackParamList, 'Investments'>;
 }
 
-export const InvestmentsScreen: React.FC<InvestmentsScreenProps> = ({ navigation }) => {
+export const InvestmentsScreen: React.FC<InvestmentsScreenProps> = ({ navigation: _navigation }) => {
   const [investments, setInvestments] = useState<Investment[]>([]);
   const [portfolio, setPortfolio] = useState<Portfolio | null>(null);
   const [loading, setLoading] = useState(true);
@@ -55,7 +55,7 @@ export const InvestmentsScreen: React.FC<InvestmentsScreenProps> = ({ navigation
       } else {
         Alert.alert('Error', portfolioResponse.error || 'Failed to load portfolio');
       }
-    } catch (error) {
+    } catch (_error) {
       Alert.alert('Error', 'Failed to load investment data');
     } finally {
       setLoading(false);

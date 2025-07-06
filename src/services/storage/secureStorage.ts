@@ -101,7 +101,7 @@ class SecureStorageService {
       let parsedValue: T;
       try {
         parsedValue = JSON.parse(value) as T;
-      } catch (parseError) {
+      } catch (_parseError) {
         parsedValue = value as T;
       }
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Alert, ScrollView, TouchableOpacity } from 'react-native';
 import { Button } from '../common/Button';
 import { Input } from '../common/Input';
-import { Transaction } from '../../types/transaction';
+import { Transaction, TransactionType, TransactionStatus, AccountType } from '../../types/transaction';
 
 interface TransactionFormProps {
   initialData?: Partial<Transaction>;
@@ -95,7 +95,7 @@ export const TransactionForm: React.FC<TransactionFormProps> = ({
       account: {
         id: 'default_account',
         name: 'Default Account',
-        type: 'checking' as any,
+        type: AccountType.CHECKING,
         bank: {
           id: 'default_bank',
           name: 'Default Bank',
@@ -107,8 +107,8 @@ export const TransactionForm: React.FC<TransactionFormProps> = ({
         accountNumber: '****1234',
         lastSync: new Date().toISOString()
       },
-      type: formData.type === 'expense' ? 'expense' as any : 'income' as any,
-      status: 'completed' as any,
+      type: formData.type === 'expense' ? TransactionType.EXPENSE : TransactionType.INCOME,
+      status: TransactionStatus.COMPLETED,
       tags: [],
       metadata: {
         source: 'manual',

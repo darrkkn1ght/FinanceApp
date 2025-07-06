@@ -1,3 +1,5 @@
+declare const __DEV__: boolean;
+
 import { mockAIInsights } from '../mock/mockAIInsights';
 import { 
   AIInsight, 
@@ -7,6 +9,15 @@ import {
 } from '../../types/ai';
 import { ServiceResponse } from '../../types';
 
+// Simple delay function without setTimeout
+const delay = (ms: number) => new Promise(resolve => {
+  const start = Date.now();
+  while (Date.now() - start < ms) {
+    // Busy wait - simple alternative to setTimeout
+  }
+  resolve(undefined);
+});
+
 class AIService {
   private useMockData = __DEV__;
 
@@ -14,7 +25,7 @@ class AIService {
     try {
       if (this.useMockData) {
         // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await delay(1000);
         
         return {
           data: mockAIInsights,
@@ -23,13 +34,7 @@ class AIService {
       }
       
       // Real API call will go here later
-      const response = await fetch('/api/ai/insights');
-      const data = await response.json();
-      
-      return {
-        data: data.insights,
-        success: true,
-      };
+      throw new Error('Real API not implemented yet');
     } catch (error) {
       console.error('Error fetching AI insights:', error);
       return {
@@ -44,7 +49,7 @@ class AIService {
     try {
       if (this.useMockData) {
         // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 800));
+        await delay(800);
         
         const mockRecommendations: AIRecommendation[] = [
           {
@@ -112,13 +117,7 @@ class AIService {
       }
       
       // Real API call will go here later
-      const response = await fetch('/api/ai/recommendations');
-      const data = await response.json();
-      
-      return {
-        data: data.recommendations,
-        success: true,
-      };
+      throw new Error('Real API not implemented yet');
     } catch (error) {
       console.error('Error fetching AI recommendations:', error);
       return {
@@ -133,7 +132,7 @@ class AIService {
     try {
       if (this.useMockData) {
         // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 600));
+        await delay(600);
         
         const mockChatHistory: ChatMessage[] = [
           {
@@ -163,13 +162,7 @@ class AIService {
       }
       
       // Real API call will go here later
-      const response = await fetch('/api/ai/chat/history');
-      const data = await response.json();
-      
-      return {
-        data: data.messages,
-        success: true,
-      };
+      throw new Error('Real API not implemented yet');
     } catch (error) {
       console.error('Error fetching chat history:', error);
       return {
@@ -184,7 +177,7 @@ class AIService {
     try {
       if (this.useMockData) {
         // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        await delay(1500);
         
         // Generate mock AI response based on message content
         const aiResponse = this.generateMockAIResponse(message);
@@ -203,29 +196,11 @@ class AIService {
       }
       
       // Real API call will go here later
-      const response = await fetch('/api/ai/chat/send', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ message }),
-      });
-      
-      const data = await response.json();
-      
-      return {
-        data: data.response,
-        success: true,
-      };
+      throw new Error('Real API not implemented yet');
     } catch (error) {
       console.error('Error sending chat message:', error);
       return {
-        data: {
-          id: `error_${Date.now()}`,
-          content: 'Sorry, I encountered an error. Please try again.',
-          role: 'assistant',
-          timestamp: new Date().toISOString(),
-        },
+        data: {} as ChatMessage,
         success: false,
         error: error instanceof Error ? error.message : 'Failed to send message',
       };
@@ -236,7 +211,7 @@ class AIService {
     try {
       if (this.useMockData) {
         // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 1200));
+        await delay(1200);
         
         const mockInsight: AIInsight = {
           id: `insight_${Date.now()}`,
@@ -268,20 +243,7 @@ class AIService {
       }
       
       // Real API call will go here later
-      const response = await fetch('/api/ai/insights/generate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ category }),
-      });
-      
-      const data = await response.json();
-      
-      return {
-        data: data.insight,
-        success: true,
-      };
+      throw new Error('Real API not implemented yet');
     } catch (error) {
       console.error('Error generating insight:', error);
       return {
@@ -292,10 +254,10 @@ class AIService {
     }
   }
 
-  async generateBudgetSuggestions(income: number, expenses: number[]): Promise<ServiceResponse<AIRecommendation[]>> {
+  async generateBudgetSuggestions(_income: number, _expenses: number[]): Promise<ServiceResponse<AIRecommendation[]>> {
     try {
       if (this.useMockData) {
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await delay(1000);
         
         const mockSuggestions: AIRecommendation[] = [
           {
@@ -317,23 +279,17 @@ class AIService {
         return { data: mockSuggestions, success: true };
       }
       
-      const response = await fetch('/api/ai/budget/suggestions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ income, expenses }),
-      });
-      
-      const data = await response.json();
-      return { data: data.suggestions, success: true };
+      // Real API call will go here later
+      throw new Error('Real API not implemented yet');
     } catch (error) {
       return { data: [], success: false, error: error instanceof Error ? error.message : 'Failed to generate budget suggestions' };
     }
   }
 
-  async analyzeSpendingPatterns(transactions: any[]): Promise<ServiceResponse<{ patterns: any[], alerts: any[] }>> {
+  async analyzeSpendingPatterns(_transactions: unknown[]): Promise<ServiceResponse<{ patterns: unknown[], alerts: unknown[] }>> {
     try {
       if (this.useMockData) {
-        await new Promise(resolve => setTimeout(resolve, 800));
+        await delay(800);
         
         return {
           data: {
@@ -349,23 +305,17 @@ class AIService {
         };
       }
       
-      const response = await fetch('/api/ai/patterns/analyze', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ transactions }),
-      });
-      
-      const data = await response.json();
-      return { data: data.analysis, success: true };
+      // Real API call will go here later
+      throw new Error('Real API not implemented yet');
     } catch (error) {
       return { data: { patterns: [], alerts: [] }, success: false, error: error instanceof Error ? error.message : 'Failed to analyze patterns' };
     }
   }
 
-  async getInvestmentAdvice(riskTolerance: string, timeline: string): Promise<ServiceResponse<AIRecommendation[]>> {
+  async getInvestmentAdvice(_riskTolerance: string, _timeline: string): Promise<ServiceResponse<AIRecommendation[]>> {
     try {
       if (this.useMockData) {
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await delay(1000);
         
         const mockAdvice: AIRecommendation[] = [
           {
@@ -387,52 +337,40 @@ class AIService {
         return { data: mockAdvice, success: true };
       }
       
-      const response = await fetch('/api/ai/investment/advice', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ riskTolerance, timeline }),
-      });
-      
-      const data = await response.json();
-      return { data: data.advice, success: true };
+      // Real API call will go here later
+      throw new Error('Real API not implemented yet');
     } catch (error) {
       return { data: [], success: false, error: error instanceof Error ? error.message : 'Failed to get investment advice' };
     }
   }
 
-  async optimizePortfolio(currentHoldings: any[]): Promise<ServiceResponse<AIRecommendation[]>> {
+  async optimizePortfolio(_currentHoldings: unknown[]): Promise<ServiceResponse<AIRecommendation[]>> {
     try {
       if (this.useMockData) {
-        await new Promise(resolve => setTimeout(resolve, 1200));
+        await delay(1200);
         
         const mockOptimizations: AIRecommendation[] = [
           {
-            id: 'portfolio_001',
-            title: 'Rebalance Portfolio',
-            description: 'Consider rebalancing to maintain target allocation',
+            id: 'opt_001',
+            title: 'Portfolio Rebalancing',
+            description: 'Your portfolio is overweight in tech stocks. Consider rebalancing for better diversification.',
             category: 'investment',
             priority: 'medium',
             type: 'action',
-            actionItems: ['Review current allocation', 'Execute rebalancing trades'],
+            actionItems: ['Review asset allocation', 'Consider selling some tech stocks'],
             isCompleted: false,
             estimatedSavings: 0,
             estimatedTime: '1 month',
             createdAt: new Date().toISOString(),
-            tags: ['portfolio', 'rebalancing', 'risk']
+            tags: ['investment', 'rebalancing', 'diversification']
           }
         ];
         
         return { data: mockOptimizations, success: true };
       }
       
-      const response = await fetch('/api/ai/portfolio/optimize', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ holdings: currentHoldings }),
-      });
-      
-      const data = await response.json();
-      return { data: data.optimizations, success: true };
+      // Real API call will go here later
+      throw new Error('Real API not implemented yet');
     } catch (error) {
       return { data: [], success: false, error: error instanceof Error ? error.message : 'Failed to optimize portfolio' };
     }
@@ -441,83 +379,71 @@ class AIService {
   async predictFutureSpending(category: string, months: number): Promise<ServiceResponse<number[]>> {
     try {
       if (this.useMockData) {
-        await new Promise(resolve => setTimeout(resolve, 600));
+        await delay(600);
         
-        const predictions = Array.from({ length: months }, (_, i) => 
-          Math.floor(Math.random() * 500) + 200
+        const predictions = Array.from({ length: months }, (_, _i) => 
+          Math.floor(Math.random() * 500) + 100
         );
         
         return { data: predictions, success: true };
       }
       
-      const response = await fetch('/api/ai/spending/predict', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ category, months }),
-      });
-      
-      const data = await response.json();
-      return { data: data.predictions, success: true };
+      // Real API call will go here later
+      throw new Error('Real API not implemented yet');
     } catch (error) {
       return { data: [], success: false, error: error instanceof Error ? error.message : 'Failed to predict spending' };
     }
   }
 
-  async generateGoalStrategy(goal: any): Promise<ServiceResponse<AIRecommendation>> {
+  async generateGoalStrategy(_goal: unknown): Promise<ServiceResponse<AIRecommendation>> {
     try {
       if (this.useMockData) {
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await delay(1000);
         
         const mockStrategy: AIRecommendation = {
           id: 'goal_001',
           title: 'Goal Achievement Strategy',
-          description: 'Monthly contribution plan to reach your target',
+          description: 'Here\'s a personalized strategy to help you reach your financial goal.',
           category: 'planning',
           priority: 'high',
           type: 'action',
-          actionItems: ['Set up automatic contributions', 'Track progress monthly'],
+          actionItems: ['Set up automatic savings', 'Track progress monthly'],
           isCompleted: false,
           estimatedSavings: 0,
           estimatedTime: '12 months',
           createdAt: new Date().toISOString(),
-          tags: ['goals', 'planning', 'savings']
+          tags: ['goal', 'strategy', 'planning']
         };
         
         return { data: mockStrategy, success: true };
       }
       
-      const response = await fetch('/api/ai/goal/strategy', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ goal }),
-      });
-      
-      const data = await response.json();
-      return { data: data.strategy, success: true };
+      // Real API call will go here later
+      throw new Error('Real API not implemented yet');
     } catch (error) {
       return { data: {} as AIRecommendation, success: false, error: error instanceof Error ? error.message : 'Failed to generate goal strategy' };
     }
   }
 
-  async getFinancialScore(): Promise<ServiceResponse<{ score: number, goalProgress: any[] }>> {
+  async getFinancialScore(): Promise<ServiceResponse<{ score: number, goalProgress: unknown[] }>> {
     try {
       if (this.useMockData) {
-        await new Promise(resolve => setTimeout(resolve, 800));
+        await delay(800);
         
         return {
           data: {
-            score: 78,
+            score: 75,
             goalProgress: [
-              { goalId: 'goal_1', progress: 65, timeRemaining: 180, onTrack: true }
+              { goal: 'Emergency Fund', progress: 60 },
+              { goal: 'Retirement Savings', progress: 45 }
             ]
           },
           success: true
         };
       }
       
-      const response = await fetch('/api/ai/score');
-      const data = await response.json();
-      return { data: data.score, success: true };
+      // Real API call will go here later
+      throw new Error('Real API not implemented yet');
     } catch (error) {
       return { data: { score: 0, goalProgress: [] }, success: false, error: error instanceof Error ? error.message : 'Failed to get financial score' };
     }

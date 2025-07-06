@@ -147,15 +147,15 @@ class AsyncStorageService {
   /**
    * Get multiple items from AsyncStorage
    */
-  async multiGet(keys: (keyof StorageKeys)[]): Promise<StorageResponse<Record<string, any>>> {
+  async multiGet(keys: (keyof StorageKeys)[]): Promise<StorageResponse<Record<string, unknown>>> {
     try {
       const keyValues = await AsyncStorage.multiGet(keys);
-      const result: Record<string, any> = {};
+      const result: Record<string, unknown> = {};
       
       keyValues.forEach(([key, value]) => {
         try {
           result[key] = value ? JSON.parse(value) : null;
-        } catch (parseError) {
+        } catch (_parseError) {
           result[key] = value;
         }
       });
@@ -177,7 +177,7 @@ class AsyncStorageService {
   /**
    * Set multiple items in AsyncStorage
    */
-  async multiSet(keyValuePairs: Array<[keyof StorageKeys, any]>): Promise<StorageResponse<null>> {
+  async multiSet(keyValuePairs: Array<[keyof StorageKeys, unknown]>): Promise<StorageResponse<null>> {
     try {
       const formattedPairs: Array<[string, string]> = keyValuePairs.map(([key, value]) => [
         key,

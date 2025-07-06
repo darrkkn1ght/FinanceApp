@@ -23,7 +23,7 @@ interface TransactionsScreenProps {
 }
 
 export const TransactionsScreen: React.FC<TransactionsScreenProps> = ({
-  navigation,
+  navigation: _navigation,
 }) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>([]);
@@ -63,7 +63,7 @@ export const TransactionsScreen: React.FC<TransactionsScreenProps> = ({
       } else {
         Alert.alert('Error', response.error || 'Failed to load transactions');
       }
-    } catch (error) {
+    } catch (_error) {
       Alert.alert('Error', 'Failed to load transactions');
     } finally {
       setLoading(false);

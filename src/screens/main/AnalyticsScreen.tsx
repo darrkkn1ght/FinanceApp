@@ -53,7 +53,7 @@ const timeFrameOptions = [
   { label: '1Y', value: '1year' },
 ];
 
-export const AnalyticsScreen: React.FC<AnalyticsScreenProps> = ({ navigation }) => {
+export const AnalyticsScreen: React.FC<AnalyticsScreenProps> = ({ navigation: _navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [selectedTimeFrame, setSelectedTimeFrame] = useState('3months');

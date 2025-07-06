@@ -1,19 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { 
   View, 
   Text, 
   StyleSheet, 
   TouchableOpacity, 
-  KeyboardAvoidingView, 
   Platform,
-  Alert 
+  Alert,
+  Keyboard,
+  SafeAreaView,
+  ScrollView,
+  KeyboardAvoidingView,
+  TextInput
 } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 
 import { Input } from '../../components/common/Input';
 import { Button } from '../../components/common/Button';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
-import { authService } from '../../services/api/authService';
+import { Icon } from '../../components/common/Icon';
+import { useAuth } from '../../context/AuthContext';
 import { AuthStackParamList } from '../../types/navigation';
 
 interface LoginScreenProps {
@@ -38,6 +43,11 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const [errors, setErrors] = useState<FormErrors>({});
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  const emailRef = useRef<TextInput>(null);
+  const passwordRef = useRef<TextInput>(null);
+  
+  const { login } = useAuth();
 
   const handleInputChange = (field: keyof LoginForm, value: string) => {
     setFormData(prev => ({
@@ -76,19 +86,19 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
     
     setLoading(true);
     try {
-      const response = await authService.login({
+      const success = await login({
         email: formData.email,
         password: formData.password,
       });
       
-      if (response.success) {
-        // Navigation to main app will be handled by AuthNavigator
-        // based on authentication state
-        Alert.alert('Success', 'Login successful!');
+      if (success) {
+        // Navigation will be handled automatically by AuthNavigator
+        // based on the updated authentication state
+        console.log('Login successful, user should be redirected');
       } else {
-        Alert.alert('Login Failed', response.error || 'Invalid credentials');
+        Alert.alert('Login Failed', 'Invalid credentials');
       }
-    } catch (error) {
+    } catch (_error) {
       Alert.alert('Login Failed', 'An unexpected error occurred');
     } finally {
       setLoading(false);
@@ -112,95 +122,121 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   };
 
   return (
-    <KeyboardAvoidingView 
-      style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={handleBackToWelcome}
+    <SafeAreaView style={styles.container}>
+      <KeyboardAvoidingView 
+        style={styles.keyboardAvoidingView}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
+      >
+        <ScrollView 
+          style={styles.scrollView}
+          contentContainerStyle={styles.scrollContent}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+          bounces={false}
+          onScrollBeginDrag={Keyboard.dismiss}
+          keyboardDismissMode="on-drag"
         >
-          <Text style={styles.backButtonText}>← Back</Text>
-        </TouchableOpacity>
-      </View>
+          <View style={styles.header}>
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={handleBackToWelcome}
+            >
+              <Text style={styles.backButtonText}>← Back</Text>
+            </TouchableOpacity>
+          </View>
 
-      <View style={styles.content}>
-        <View style={styles.logoSection}>
-          <Text style={styles.logo}>💰</Text>
-          <Text style={styles.title}>Welcome Back</Text>
-          <Text style={styles.subtitle}>
-            Sign in to your account to continue
-          </Text>
-        </View>
+          <View style={styles.content}>
+            <View style={styles.logoSection}>
+              <Text style={styles.logo}>💰</Text>
+              <Text style={styles.title}>Welcome Back</Text>
+              <Text style={styles.subtitle}>
+                Sign in to your account to continue
+              </Text>
+            </View>
 
-        <View style={styles.form}>
-          <Input
-            placeholder="Email Address"
-            value={formData.email}
-            onChangeText={(value) => handleInputChange('email', value)}
-            error={errors.email}
-            keyboardType="email-address"
-            autoCapitalize="none"
-          />
+            <View style={styles.form}>
+              <Input
+                ref={emailRef}
+                placeholder="Email Address"
+                value={formData.email}
+                onChangeText={(value) => handleInputChange('email', value)}
+                error={errors.email}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                returnKeyType="next"
+                onSubmitEditing={() => passwordRef.current?.focus()}
+                blurOnSubmit={false}
+              />
 
-          <Input
-            placeholder="Password"
-            value={formData.password}
-            onChangeText={(value) => handleInputChange('password', value)}
-            error={errors.password}
-            secureTextEntry={!showPassword}
-            rightIcon={showPassword ? 'eye-off' : 'eye'}
-            onRightIconPress={() => setShowPassword(!showPassword)}
-          />
+              <Input
+                ref={passwordRef}
+                placeholder="Password"
+                value={formData.password}
+                onChangeText={(value) => handleInputChange('password', value)}
+                error={errors.password}
+                secureTextEntry={!showPassword}
+                rightIcon={
+                  <Icon 
+                    name={showPassword ? 'eye-off' : 'eye'} 
+                    size={20} 
+                    color="#757575" 
+                  />
+                }
+                onRightIconPress={() => setShowPassword(!showPassword)}
+                returnKeyType="done"
+                onSubmitEditing={handleLogin}
+              />
 
-          <TouchableOpacity
-            style={styles.forgotPassword}
-            onPress={handleForgotPassword}
-          >
-            <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
-          </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.forgotPassword}
+                onPress={handleForgotPassword}
+              >
+                <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+              </TouchableOpacity>
 
-          <Button
-            title="Sign In"
-            onPress={handleLogin}
-            disabled={loading}
-            style={styles.loginButton}
-          />
-        </View>
+              <Button
+                title="Sign In"
+                onPress={handleLogin}
+                disabled={loading}
+                style={styles.loginButton}
+              />
+            </View>
 
-        <View style={styles.divider}>
-          <View style={styles.dividerLine} />
-          <Text style={styles.dividerText}>or</Text>
-          <View style={styles.dividerLine} />
-        </View>
+            <View style={styles.divider}>
+              <View style={styles.dividerLine} />
+              <Text style={styles.dividerText}>or</Text>
+              <View style={styles.dividerLine} />
+            </View>
 
-        <View style={styles.socialButtons}>
-          <TouchableOpacity style={styles.socialButton}>
-            <Text style={styles.socialButtonText}>Continue with Google</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity style={styles.socialButton}>
-            <Text style={styles.socialButtonText}>Continue with Apple</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+            <View style={styles.socialButtons}>
+              <TouchableOpacity style={styles.socialButton}>
+                <Text style={styles.socialButtonText}>Continue with Google</Text>
+              </TouchableOpacity>
+              
+              <TouchableOpacity style={styles.socialButton}>
+                <Text style={styles.socialButtonText}>Continue with Apple</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
 
-      <View style={styles.footer}>
-        <Text style={styles.footerText}>
-          Don't have an account?{' '}
-          <TouchableOpacity onPress={handleCreateAccount}>
-            <Text style={styles.createAccountLink}>Create Account</Text>
-          </TouchableOpacity>
-        </Text>
-      </View>
+          <View style={styles.footer}>
+            <Text style={styles.footerText}>
+              Don't have an account?{' '}
+              <TouchableOpacity onPress={handleCreateAccount}>
+                <Text style={styles.createAccountLink}>Create Account</Text>
+              </TouchableOpacity>
+            </Text>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
 
       {loading && (
         <View style={styles.loadingOverlay}>
           <LoadingSpinner size="large" />
         </View>
       )}
-    </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
@@ -208,6 +244,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    padding: 24,
   },
   header: {
     paddingHorizontal: 24,
@@ -319,6 +361,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  keyboardAvoidingView: {
+    flex: 1,
   },
 });
 

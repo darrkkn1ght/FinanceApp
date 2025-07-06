@@ -1,5 +1,7 @@
 // src/services/utils/validationUtils.ts
 
+
+
 export interface ValidationResult {
     isValid: boolean;
     errors: string[];
@@ -308,7 +310,7 @@ export interface ValidationResult {
   /**
    * Validates required fields
    */
-  export const validateRequired = (value: any, fieldName: string): ValidationResult => {
+  export const validateRequired = (value: unknown, fieldName: string): ValidationResult => {
     const errors: string[] = [];
     
     if (value === null || value === undefined) {
@@ -577,9 +579,8 @@ export interface ValidationResult {
     if (!url) {
       errors.push('URL is required');
     } else {
-      try {
-        new URL(url);
-      } catch {
+      const urlRegex = /^https?:\/\/.+/;
+      if (!urlRegex.test(url)) {
         errors.push('Please enter a valid URL');
       }
     }

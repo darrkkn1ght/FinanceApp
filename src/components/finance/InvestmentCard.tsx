@@ -19,7 +19,7 @@ interface InvestmentCardProps {
 }
 
 export const InvestmentCard: React.FC<InvestmentCardProps> = ({
-  id,
+  id: _id,
   symbol,
   name,
   currentPrice,
@@ -65,26 +65,27 @@ export const InvestmentCard: React.FC<InvestmentCardProps> = ({
   };
 
   const getSymbolIcon = (symbol: string) => {
+    // Using text-based icons instead of emojis for better compatibility
     const iconMap: { [key: string]: string } = {
-      'AAPL': '🍎',
-      'GOOGL': '🔍',
-      'MSFT': '💻',
-      'AMZN': '📦',
-      'TSLA': '🚗',
-      'NVDA': '🖥️',
-      'META': '👥',
-      'NFLX': '🎬',
-      'DIS': '🏰',
-      'UBER': '🚕',
-      'SPOT': '🎵',
-      'PYPL': '💳',
-      'SQ': '💰',
-      'COIN': '₿',
+      'AAPL': 'A',
+      'GOOGL': 'G',
+      'MSFT': 'M',
+      'AMZN': 'A',
+      'TSLA': 'T',
+      'NVDA': 'N',
+      'META': 'M',
+      'NFLX': 'N',
+      'DIS': 'D',
+      'UBER': 'U',
+      'SPOT': 'S',
+      'PYPL': 'P',
+      'SQ': 'S',
+      'COIN': 'C',
       'BTC': '₿',
-      'ETH': '💎',
-      'SPY': '📊',
-      'QQQ': '📈',
-      'VTI': '🏛️',
+      'ETH': 'Ξ',
+      'SPY': 'S',
+      'QQQ': 'Q',
+      'VTI': 'V',
       'default': '📊'
     };
     

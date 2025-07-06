@@ -214,7 +214,7 @@ export interface Transaction {
     accountId: string;
     tags: string[];
     location?: Location;
-    receipt?: File;
+    receipt?: string; // File path or URL
     isRecurring?: boolean;
     recurringData?: Partial<RecurringTransaction>;
   }
@@ -295,11 +295,10 @@ export interface Transaction {
   
   // Screen props types
   export interface TransactionScreenProps {
-    navigation: any;
-    route: any;
+    navigation: unknown;
+    route: unknown;
   }
   
-  export interface AddTransactionScreenProps extends TransactionScreenProps {}
   export interface TransactionDetailsScreenProps extends TransactionScreenProps {
     route: {
       params: {
@@ -307,4 +306,3 @@ export interface Transaction {
       };
     };
   }
-  export interface TransactionsScreenProps extends TransactionScreenProps {}

@@ -1,6 +1,10 @@
 // src/utils/helpers.ts
 import { Transaction } from '../types/transaction';
 
+// Declare setTimeout and clearTimeout for React Native compatibility
+declare const setTimeout: (callback: () => void, delay: number) => number;
+declare const clearTimeout: (id: number) => void;
+
 /**
  * Format currency amount to string with proper currency symbol
  */
@@ -77,11 +81,11 @@ export const generateId = (prefix: string = '', length: number = 8): string => {
 /**
  * Debounce function for search inputs
  */
-export const debounce = <T extends (...args: any[]) => void>(
+export const debounce = <T extends (...args: unknown[]) => void>(
   func: T,
   delay: number
 ): ((...args: Parameters<T>) => void) => {
-  let timeoutId: NodeJS.Timeout;
+  let timeoutId: ReturnType<typeof setTimeout>;
   
   return (...args: Parameters<T>) => {
     clearTimeout(timeoutId);
@@ -118,7 +122,7 @@ export const isValidEmail = (email: string): boolean => {
  * Check if phone number is valid (basic validation)
  */
 export const isValidPhoneNumber = (phone: string): boolean => {
-  const phoneRegex = /^[\+]?[\d\s\-\(\)]{10,}$/;
+  const phoneRegex = /^[+]?[\d\s\-()]{10,}$/;
   return phoneRegex.test(phone);
 };
 
@@ -237,7 +241,7 @@ export const deepClone = <T>(obj: T): T => {
   if (typeof obj === 'object') {
     const cloned = {} as T;
     for (const key in obj) {
-      if (obj.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
         cloned[key] = deepClone(obj[key]);
       }
     }
@@ -261,7 +265,7 @@ export const generateRandomColor = (): string => {
   const colors = [
     '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7',
     '#DDA0DD', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E9',
-    '#F8C471', '#82E0AA', '#F1948A', '#85C1E9', '#F7DC6F'
+    '#F8C471', '#82E0AA', '#F1948A', '#AED6F1', '#A9DFBF'
   ];
   
   return colors[Math.floor(Math.random() * colors.length)];

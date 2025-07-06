@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Icon } from '../common/Icon';
 
 interface AccountCardProps {
   accountName: string;
@@ -44,14 +45,14 @@ export const AccountCard: React.FC<AccountCardProps> = ({
     return colors[type] || '#757575';
   };
 
-  const getAccountTypeIcon = (type: string): string => {
-    const icons: { [key: string]: string } = {
-      checking: '💳',
-      savings: '🏦',
-      credit: '💰',
-      investment: '📈'
+  const getAccountTypeIcon = (type: string): 'wallet' | 'bank' | 'credit-card' | 'investment' => {
+    const iconMap: { [key: string]: 'wallet' | 'bank' | 'credit-card' | 'investment' } = {
+      checking: 'wallet',
+      savings: 'bank',
+      credit: 'credit-card',
+      investment: 'investment'
     };
-    return icons[type] || '💳';
+    return iconMap[type] || 'wallet';
   };
 
   const getBalanceColor = (type: string, amount: number): string => {
@@ -80,10 +81,15 @@ export const AccountCard: React.FC<AccountCardProps> = ({
     >
       <View style={styles.header}>
         <View style={styles.accountInfo}>
-          <View style={styles.iconContainer}>
-            <Text style={styles.accountIcon}>
-              {getAccountTypeIcon(accountType)}
-            </Text>
+          <View style={[
+            styles.iconContainer,
+            { backgroundColor: getAccountTypeColor(accountType) }
+          ]}>
+            <Icon 
+              name={getAccountTypeIcon(accountType)} 
+              size={20} 
+              color="#FFFFFF" 
+            />
           </View>
           <View style={styles.accountDetails}>
             <Text style={styles.accountName}>{accountName}</Text>
@@ -157,13 +163,9 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#F5F5F5',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
-  },
-  accountIcon: {
-    fontSize: 18,
   },
   accountDetails: {
     flex: 1,
@@ -203,21 +205,22 @@ const styles = StyleSheet.create({
   },
   bankName: {
     fontSize: 14,
+    color: '#757575',
     fontWeight: '500',
-    color: '#1A1A1A',
   },
   accountNumber: {
-    fontSize: 14,
-    color: '#757575',
+    fontSize: 12,
+    color: '#9E9E9E',
     fontFamily: 'monospace',
   },
   statusIndicator: {
     position: 'absolute',
-    top: 8,
-    right: 8,
+    top: 0,
+    right: 0,
     width: 8,
     height: 8,
     borderRadius: 4,
+    margin: 8,
   },
 });
 

@@ -45,7 +45,7 @@ export const TransactionDetailsScreen: React.FC<TransactionDetailsScreenProps> =
         Alert.alert('Error', response.error || 'Failed to load transaction');
         navigation.goBack();
       }
-    } catch (error) {
+    } catch (_error) {
       Alert.alert('Error', 'Failed to load transaction');
       navigation.goBack();
     } finally {
@@ -95,7 +95,7 @@ export const TransactionDetailsScreen: React.FC<TransactionDetailsScreenProps> =
       } else {
         Alert.alert('Error', response.error || 'Failed to delete transaction');
       }
-    } catch (error) {
+    } catch (_error) {
       Alert.alert('Error', 'Failed to delete transaction');
     }
   };
@@ -116,7 +116,7 @@ ${transaction.notes ? `Notes: ${transaction.notes}` : ''}`;
         message: shareContent,
         title: 'Transaction Details',
       });
-    } catch (error) {
+    } catch (_error) {
       Alert.alert('Error', 'Failed to share transaction details');
     }
   };

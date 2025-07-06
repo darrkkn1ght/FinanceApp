@@ -13,10 +13,9 @@ import { NavigationProp } from '@react-navigation/native';
 import { TransactionCard } from '../../components/finance/TransactionCard';
 import { AccountCard } from '../../components/finance/AccountCard';
 import { BudgetProgress } from '../../components/finance/BudgetProgress';
-import { GoalCard } from '../../components/finance/GoalCard';
 import { AIInsightCard } from '../../components/ai/AIInsightCard';
+import { StatCard } from '../../components/finance/StatCard';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
-import { Card } from '../../components/common/Card';
 
 import { transactionService } from '../../services/api/transactionService';
 import { investmentService } from '../../services/api/investmentService';
@@ -26,6 +25,9 @@ import { Transaction } from '../../types/transaction';
 import { Investment } from '../../types/investment';
 import { AIInsight } from '../../types/ai';
 import { MainStackParamList } from '../../types/navigation';
+
+
+
 
 interface DashboardScreenProps {
   navigation: NavigationProp<MainStackParamList>;
@@ -42,24 +44,24 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ navigation }) 
     try {
       setLoading(true);
       
-      // Load recent transactions
+      // Load transactions
       const transactionsResponse = await transactionService.getTransactions();
       if (transactionsResponse.success) {
-        setTransactions(transactionsResponse.data.slice(0, 5)); // Show only 5 recent
+        setTransactions(transactionsResponse.data);
       }
-
-      // Load investment data
+      
+      // Load investments
       const investmentsResponse = await investmentService.getInvestments();
       if (investmentsResponse.success) {
         setInvestments(investmentsResponse.data);
       }
-
+      
       // Load AI insights
-      const aiInsightsResponse = await aiService.getInsights();
-      if (aiInsightsResponse.success) {
-        setAiInsights(aiInsightsResponse.data.slice(0, 3)); // Show top 3
+      const insightsResponse = await aiService.getInsights();
+      if (insightsResponse.success) {
+        setAiInsights(insightsResponse.data);
       }
-    } catch (error) {
+    } catch (_error) {
       Alert.alert('Error', 'Failed to load dashboard data');
     } finally {
       setLoading(false);
@@ -73,35 +75,35 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ navigation }) 
   };
 
   const calculateTotalBalance = (): number => {
-    return investments.reduce((total, investment) => total + investment.currentValue, 0);
+    return investments.reduce((total, inv) => total + inv.currentValue, 0);
   };
 
   const calculateMonthlySpending = (): number => {
-    const thisMonth = new Date().getMonth();
-    const thisYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
     
     return transactions
-      .filter(transaction => {
-        const transactionDate = new Date(transaction.date);
-        return transactionDate.getMonth() === thisMonth && 
-               transactionDate.getFullYear() === thisYear &&
-               transaction.amount < 0;
+      .filter(t => {
+        const transactionDate = new Date(t.date);
+        return transactionDate.getMonth() === currentMonth && 
+               transactionDate.getFullYear() === currentYear &&
+               t.amount < 0;
       })
-      .reduce((total, transaction) => total + Math.abs(transaction.amount), 0);
+      .reduce((total, t) => total + Math.abs(t.amount), 0);
   };
 
   const calculateMonthlyIncome = (): number => {
-    const thisMonth = new Date().getMonth();
-    const thisYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
     
     return transactions
-      .filter(transaction => {
-        const transactionDate = new Date(transaction.date);
-        return transactionDate.getMonth() === thisMonth && 
-               transactionDate.getFullYear() === thisYear &&
-               transaction.amount > 0;
+      .filter(t => {
+        const transactionDate = new Date(t.date);
+        return transactionDate.getMonth() === currentMonth && 
+               transactionDate.getFullYear() === currentYear &&
+               t.amount > 0;
       })
-      .reduce((total, transaction) => total + transaction.amount, 0);
+      .reduce((total, t) => total + t.amount, 0);
   };
 
   useEffect(() => {
@@ -111,7 +113,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ navigation }) 
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <LoadingSpinner />
+        <LoadingSpinner size="large" />
       </View>
     );
   }
@@ -125,36 +127,39 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ navigation }) 
     >
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.greeting}>Good Morning!</Text>
+        <Text style={styles.greeting}>Good morning!</Text>
         <Text style={styles.subtitle}>Here's your financial overview</Text>
       </View>
 
-      {/* Account Balance Cards */}
+      {/* Main Balance Card */}
       <View style={styles.balanceSection}>
         <AccountCard
-          accountName="Total Balance"
+          accountName="Total Portfolio"
           accountType="investment"
           balance={calculateTotalBalance()}
-          bankName="Portfolio"
-          accountNumber="1234"
-          onPress={() => Alert.alert('Coming Soon', 'Investment details will be implemented soon')}
+          bankName="All Accounts"
+          accountNumber="****"
+          onPress={() => Alert.alert('Coming Soon', 'Portfolio details will be implemented soon')}
         />
-        <View style={styles.balanceRow}>
-          <AccountCard
-            accountName="Monthly Income"
-            accountType="checking"
-            balance={calculateMonthlyIncome()}
-            bankName="Income"
-            accountNumber="5678"
-            onPress={() => Alert.alert('Coming Soon', 'Transaction details will be implemented soon')}
+      </View>
+
+      {/* Income and Expenses */}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>This Month</Text>
+        <View style={styles.statsRow}>
+          <StatCard
+            title="Income"
+            value={calculateMonthlyIncome()}
+            change={12.5}
+            icon="income"
+            onPress={() => navigation.navigate('TransactionDetails', { transactionId: 'income' })}
           />
-          <AccountCard
-            accountName="Monthly Spending"
-            accountType="credit"
-            balance={-calculateMonthlySpending()}
-            bankName="Expenses"
-            accountNumber="9012"
-            onPress={() => Alert.alert('Coming Soon', 'Transaction details will be implemented soon')}
+          <StatCard
+            title="Expenses"
+            value={calculateMonthlySpending()}
+            change={-8.2}
+            icon="expense"
+            onPress={() => navigation.navigate('TransactionDetails', { transactionId: 'expenses' })}
           />
         </View>
       </View>
@@ -185,7 +190,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ navigation }) 
       <View style={styles.section}>
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Budget Overview</Text>
-          <TouchableOpacity onPress={() => Alert.alert('Coming Soon', 'Budget management will be implemented soon')}>
+          <TouchableOpacity onPress={() => navigation.navigate('Budget')}>
             <Text style={styles.seeAll}>Manage</Text>
           </TouchableOpacity>
         </View>
@@ -198,44 +203,8 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ navigation }) 
         <BudgetProgress
           category="Shopping"
           budgetAmount={400}
-          spentAmount={180.25}
+          spentAmount={280.75}
           onPress={() => navigation.navigate('Budget')}
-        />
-        <BudgetProgress
-          category="Entertainment"
-          budgetAmount={200}
-          spentAmount={95.75}
-          onPress={() => navigation.navigate('Budget')}
-        />
-      </View>
-
-      {/* Financial Goals */}
-      <View style={styles.section}>
-        <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Financial Goals</Text>
-          <TouchableOpacity onPress={() => Alert.alert('Coming Soon', 'Goals will be implemented soon')}>
-            <Text style={styles.seeAll}>View All</Text>
-          </TouchableOpacity>
-        </View>
-        <GoalCard
-          id="1"
-          title="Emergency Fund"
-          targetAmount={5000}
-          currentAmount={2500}
-          targetDate="2025-12-31"
-          category="emergency"
-          priority="high"
-          onPress={() => Alert.alert('Coming Soon', 'Goals will be implemented soon')}
-        />
-        <GoalCard
-          id="2"
-          title="Vacation Fund"
-          targetAmount={3000}
-          currentAmount={800}
-          targetDate="2025-08-15"
-          category="vacation"
-          priority="medium"
-          onPress={() => Alert.alert('Coming Soon', 'Goals will be implemented soon')}
         />
       </View>
 
@@ -243,23 +212,17 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ navigation }) 
       <View style={styles.section}>
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Recent Transactions</Text>
-          <TouchableOpacity onPress={() => Alert.alert('Coming Soon', 'Transactions will be implemented soon')}>
-            <Text style={styles.seeAll}>View All</Text>
+          <TouchableOpacity onPress={() => Alert.alert('Coming Soon', 'Transaction details will be implemented soon')}>
+            <Text style={styles.seeAll}>See All</Text>
           </TouchableOpacity>
         </View>
-        {transactions.length > 0 ? (
-          transactions.map((transaction) => (
-            <TransactionCard
-              key={transaction.id}
-              transaction={transaction}
-              onPress={() => Alert.alert('Coming Soon', 'Transaction details will be implemented soon')}
-            />
-          ))
-        ) : (
-          <Card style={styles.emptyCard}>
-            <Text style={styles.emptyText}>No recent transactions</Text>
-          </Card>
-        )}
+        {transactions.slice(0, 3).map((transaction) => (
+          <TransactionCard
+            key={transaction.id}
+            transaction={transaction}
+            onPress={() => navigation.navigate('TransactionDetails', { transactionId: transaction.id })}
+          />
+        ))}
       </View>
 
       {/* Quick Actions */}
@@ -268,15 +231,32 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ navigation }) 
         <View style={styles.quickActions}>
           <TouchableOpacity
             style={styles.quickAction}
-            onPress={() => Alert.alert('Coming Soon', 'Add transaction will be implemented soon')}
+            onPress={() => navigation.navigate('AddTransaction')}
           >
+            <View style={[styles.quickActionIcon, { backgroundColor: '#2E7D32' }]}>
+              <Text style={styles.quickActionIconText}>+</Text>
+            </View>
             <Text style={styles.quickActionText}>Add Transaction</Text>
           </TouchableOpacity>
+          
           <TouchableOpacity
             style={styles.quickAction}
-            onPress={() => Alert.alert('Coming Soon', 'AI Coach will be implemented soon')}
+            onPress={() => navigation.navigate('Budget')}
           >
-            <Text style={styles.quickActionText}>Ask AI Coach</Text>
+            <View style={[styles.quickActionIcon, { backgroundColor: '#1976D2' }]}>
+              <Text style={styles.quickActionIconText}>📊</Text>
+            </View>
+            <Text style={styles.quickActionText}>View Budget</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity
+            style={styles.quickAction}
+            onPress={() => navigation.navigate('Goals')}
+          >
+            <View style={[styles.quickActionIcon, { backgroundColor: '#7B1FA2' }]}>
+              <Text style={styles.quickActionIconText}>🎯</Text>
+            </View>
+            <Text style={styles.quickActionText}>Goals</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -302,31 +282,25 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   greeting: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: '700',
     color: '#1A1A1A',
     marginBottom: 4,
   },
   subtitle: {
     fontSize: 16,
-    color: '#666666',
+    color: '#757575',
   },
   balanceSection: {
     paddingHorizontal: 20,
     paddingVertical: 16,
     backgroundColor: '#FFFFFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#E0E0E0',
-  },
-  balanceRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 12,
-    gap: 12,
   },
   section: {
-    marginTop: 20,
     paddingHorizontal: 20,
+    paddingVertical: 16,
+    backgroundColor: '#FFFFFF',
+    marginTop: 8,
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -335,40 +309,46 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: '600',
     color: '#1A1A1A',
   },
   seeAll: {
     fontSize: 14,
     color: '#2E7D32',
-    fontWeight: '500',
+    fontWeight: '600',
   },
-  emptyCard: {
-    padding: 20,
-    alignItems: 'center',
-  },
-  emptyText: {
-    fontSize: 16,
-    color: '#666666',
+  statsRow: {
+    flexDirection: 'row',
+    gap: 12,
   },
   quickActions: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 20,
-    gap: 12,
+    justifyContent: 'space-around',
+    marginTop: 8,
   },
   quickAction: {
-    flex: 1,
-    backgroundColor: '#2E7D32',
-    padding: 16,
-    borderRadius: 8,
     alignItems: 'center',
+    flex: 1,
+  },
+  quickActionIcon: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  quickActionIconText: {
+    fontSize: 20,
+    color: '#FFFFFF',
+    fontWeight: 'bold',
   },
   quickActionText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: 12,
+    color: '#757575',
+    textAlign: 'center',
+    fontWeight: '500',
   },
 });
 

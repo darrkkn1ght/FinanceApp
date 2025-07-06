@@ -1,5 +1,6 @@
 // Navigation type definitions for the Finance App
 
+import React from 'react';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
@@ -289,8 +290,8 @@ export interface GoalDetailsScreenNavigationProps {
 
 // Generic Navigation Props
 export interface NavigationProps<
-  T extends NavigationProp<any>,
-  R extends RouteProp<any, any>
+  T extends NavigationProp<Record<string, object | undefined>>,
+  R extends RouteProp<Record<string, object | undefined>, string>
 > {
   navigation: T;
   route: R;
@@ -298,7 +299,7 @@ export interface NavigationProps<
 
 // Screen Component Type Helper
 export type ScreenComponent<
-  T extends NavigationProp<any>,
-  R extends RouteProp<any, any>
+  T extends NavigationProp<Record<string, object | undefined>>,
+  R extends RouteProp<Record<string, object | undefined>, string>
 > = React.FC<NavigationProps<T, R>>;
 

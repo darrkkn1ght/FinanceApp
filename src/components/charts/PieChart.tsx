@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity, ViewStyle } from 'react-native';
 import { PieChart as RNPieChart } from 'react-native-chart-kit';
 
 interface PieChartDataPoint {
@@ -27,7 +27,7 @@ interface PieChartProps {
   hasLegend?: boolean;
   legendPosition?: 'bottom' | 'right' | 'top';
   paddingLeft?: number;
-  style?: any;
+  style?: ViewStyle;
 }
 
 export const PieChart: React.FC<PieChartProps> = ({
@@ -38,34 +38,22 @@ export const PieChart: React.FC<PieChartProps> = ({
   showLegend = true,
   showPercentages = true,
   showValues = false,
-  animated = false,
+  animated: _animated = false,
   onSlicePress,
   title,
   subtitle,
   formatValue,
   centerText,
-  hasLegend = true,
+  hasLegend: _hasLegend = true,
   legendPosition = 'bottom',
   paddingLeft = 15,
   style,
 }) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  const [animationProgress, setAnimationProgress] = useState(0);
-
-  useEffect(() => {
-    if (animated) {
-      const timer = setTimeout(() => {
-        setAnimationProgress(1);
-      }, 100);
-      return () => clearTimeout(timer);
-    } else {
-      setAnimationProgress(1);
-    }
-  }, [animated]);
 
   const totalValue = data.reduce((sum, item) => sum + item.value, 0);
 
-  const enhancedData = data.map((item, index) => ({
+  const enhancedData = data.map((item, _index) => ({
     ...item,
     percentage: (item.value / totalValue) * 100,
     legendFontColor: item.legendFontColor || '#666666',

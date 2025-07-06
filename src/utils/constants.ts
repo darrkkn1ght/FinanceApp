@@ -6,9 +6,7 @@ export const APP_VERSION = '1.0.0';
 export const APP_BUILD = '1';
 
 // API Configuration
-export const API_BASE_URL = __DEV__ 
-  ? 'https://api-dev.financeapp.com/v1'
-  : 'https://api.financeapp.com/v1';
+export const API_BASE_URL = 'https://api-dev.financeapp.com/v1'; // Use dev API for now
 
 export const API_TIMEOUT = 10000; // 10 seconds
 
@@ -201,7 +199,7 @@ export const VALIDATION_RULES = {
 // Regular Expressions
 export const REGEX_PATTERNS = {
   EMAIL: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-  PHONE: /^[\+]?[\d\s\-\(\)]{10,}$/,
+  PHONE: /^[+]?[\d\s\-()]{10,}$/,
   PASSWORD: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
   ALPHA_NUMERIC: /^[a-zA-Z0-9]+$/,
   NUMBERS_ONLY: /^[0-9]+$/,
@@ -243,12 +241,12 @@ export const FEATURE_FLAGS = {
   PUSH_NOTIFICATIONS: true,
   INVESTMENT_TRACKING: true,
   AI_INSIGHTS: true,
-  BANK_SYNC: __DEV__ ? false : true,
+  BANK_SYNC: false, // Disabled for development
   EXPORT_DATA: true,
   MULTI_CURRENCY: true,
   DARK_MODE: true,
   OFFLINE_MODE: true,
-  ANALYTICS_TRACKING: !__DEV__,
+  ANALYTICS_TRACKING: false, // Disabled for development
 } as const;
 
 // Supported Currencies
@@ -289,11 +287,11 @@ export const CHART_COLORS = [
 
 // Environment Variables
 export const ENV_VARS = {
-  NODE_ENV: process.env.NODE_ENV || 'development',
-  API_URL: process.env.EXPO_PUBLIC_API_URL || API_BASE_URL,
-  SENTRY_DSN: process.env.EXPO_PUBLIC_SENTRY_DSN,
-  ANALYTICS_KEY: process.env.EXPO_PUBLIC_ANALYTICS_KEY,
-  ENCRYPTION_KEY: process.env.EXPO_PUBLIC_ENCRYPTION_KEY,
+  NODE_ENV: 'development',
+  API_URL: API_BASE_URL,
+  SENTRY_DSN: undefined,
+  ANALYTICS_KEY: undefined,
+  ENCRYPTION_KEY: undefined,
 } as const;
 
 // Deep Linking

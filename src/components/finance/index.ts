@@ -1,11 +1,12 @@
 // Finance Components Index
 // src/components/finance/index.ts
 
-export { TransactionCard } from './TransactionCard';
 export { AccountCard } from './AccountCard';
 export { BudgetProgress } from './BudgetProgress';
 export { GoalCard } from './GoalCard';
 export { InvestmentCard } from './InvestmentCard';
+export { TransactionCard } from './TransactionCard';
+export { StatCard } from './StatCard';
 
 // Re-export default exports for convenience
 export { default as TransactionCardDefault } from './TransactionCard';

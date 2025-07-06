@@ -34,7 +34,7 @@ export interface CreateTransactionRequest {
 }
 
 class TransactionService {
-  private useMockData = __DEV__;
+  private useMockData = true; // Use mock data for development
 
   async getTransactions(
     filters?: TransactionFilters

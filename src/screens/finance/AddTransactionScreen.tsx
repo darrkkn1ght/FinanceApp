@@ -17,7 +17,6 @@ import { Button } from '../../components/common/Button';
 import { Card } from '../../components/common/Card';
 import { Input } from '../../components/common/Input';
 import { transactionService } from '../../services/api/transactionService';
-import { Transaction } from '../../types/transaction';
 import { MainStackParamList } from '../../types/navigation';
 
 interface AddTransactionScreenProps {
@@ -145,7 +144,7 @@ export const AddTransactionScreen: React.FC<AddTransactionScreenProps> = ({
       } else {
         Alert.alert('Error', response.error || 'Failed to add transaction');
       }
-    } catch (error) {
+    } catch (_error) {
       Alert.alert('Error', 'Failed to add transaction. Please try again.');
     } finally {
       setLoading(false);

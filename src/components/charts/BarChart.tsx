@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity, ViewStyle } from 'react-native';
 import { BarChart as RNBarChart } from 'react-native-chart-kit';
 
 interface BarChartDataPoint {
@@ -27,7 +27,7 @@ interface BarChartProps {
   minValue?: number;
   horizontalLabelRotation?: number;
   verticalLabelRotation?: number;
-  style?: any;
+  style?: ViewStyle;
 }
 
 export const BarChart: React.FC<BarChartProps> = ({
@@ -37,7 +37,7 @@ export const BarChart: React.FC<BarChartProps> = ({
   showGrid = true,
   showLabels = true,
   showValues = true,
-  animated = false,
+  animated: _animated = false,
   colors = ['#2196F3', '#4CAF50', '#FF9800', '#F44336', '#9C27B0', '#00BCD4'],
   onBarPress,
   title,
@@ -45,25 +45,14 @@ export const BarChart: React.FC<BarChartProps> = ({
   formatValue,
   yAxisSuffix = '',
   yAxisPrefix = '',
-  maxValue,
+  maxValue: _maxValue,
   minValue,
   horizontalLabelRotation = 0,
   verticalLabelRotation = 0,
   style,
 }) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  const [animationProgress, setAnimationProgress] = useState(0);
-
-  useEffect(() => {
-    if (animated) {
-      const timer = setTimeout(() => {
-        setAnimationProgress(1);
-      }, 100);
-      return () => clearTimeout(timer);
-    } else {
-      setAnimationProgress(1);
-    }
-  }, [animated]);
+  // Animation state removed - not being used
 
   const handleBarPress = (index: number) => {
     setSelectedIndex(index);
@@ -78,7 +67,7 @@ export const BarChart: React.FC<BarChartProps> = ({
       {
         data: data.map(item => item.value),
         colors: data.map((item, index) => 
-          (opacity = 1) => item.color || colors[index % colors.length]
+          (_opacity = 1) => item.color || colors[index % colors.length]
         ),
       },
     ],

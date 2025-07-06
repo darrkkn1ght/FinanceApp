@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
-import { View, TextInput, Text, StyleSheet, ViewStyle, TextStyle, TouchableOpacity } from 'react-native';
+import React, { useState, useCallback, forwardRef } from 'react';
+import { View, TextInput, Text, StyleSheet, ViewStyle, TextStyle, TouchableOpacity, Platform } from 'react-native';
 
 interface InputProps {
   label?: string;
   value: string;
   onChangeText: (text: string) => void;
   placeholder?: string;
-  variant?: 'default' | 'outlined' | 'filled';
   size?: 'small' | 'medium' | 'large';
   disabled?: boolean;
   error?: string;
@@ -18,20 +17,23 @@ interface InputProps {
   numberOfLines?: number;
   maxLength?: number;
   leftIcon?: React.ReactNode;
-  rightIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode | string;
   onRightIconPress?: () => void;
   style?: ViewStyle;
   inputStyle?: TextStyle;
   onFocus?: () => void;
   onBlur?: () => void;
+  returnKeyType?: 'done' | 'go' | 'next' | 'search' | 'send';
+  onSubmitEditing?: () => void;
+  blurOnSubmit?: boolean;
+  textContentType?: 'none' | 'URL' | 'addressCity' | 'addressCityAndState' | 'addressState' | 'countryName' | 'creditCardNumber' | 'creditCardExpiration' | 'creditCardExpirationMonth' | 'creditCardExpirationYear' | 'creditCardSecurityCode' | 'creditCardName' | 'creditCardGivenName' | 'creditCardMiddleName' | 'creditCardFamilyName' | 'creditCardType' | 'birthdate' | 'birthdateDay' | 'birthdateMonth' | 'birthdateYear' | 'emailAddress' | 'familyName' | 'fullStreetAddress' | 'givenName' | 'jobTitle' | 'location' | 'middleName' | 'name' | 'namePrefix' | 'nameSuffix' | 'nickname' | 'organizationName' | 'postalCode' | 'streetAddressLine1' | 'streetAddressLine2' | 'sublocality' | 'telephoneNumber' | 'username' | 'password' | 'newPassword' | 'oneTimeCode';
 }
 
-export const Input: React.FC<InputProps> = ({
+export const Input = forwardRef<TextInput, InputProps>(({
   label,
   value,
   onChangeText,
   placeholder,
-  variant = 'default',
   size = 'medium',
   disabled = false,
   error,
@@ -49,18 +51,26 @@ export const Input: React.FC<InputProps> = ({
   inputStyle,
   onFocus,
   onBlur,
-}) => {
+  returnKeyType,
+  onSubmitEditing,
+  blurOnSubmit,
+  textContentType,
+}, ref) => {
   const [isFocused, setIsFocused] = useState(false);
 
-  const handleFocus = () => {
+  const handleFocus = useCallback(() => {
     setIsFocused(true);
     onFocus?.();
-  };
+  }, [onFocus]);
 
-  const handleBlur = () => {
+  const handleBlur = useCallback(() => {
     setIsFocused(false);
     onBlur?.();
-  };
+  }, [onBlur]);
+
+  const handleChangeText = useCallback((text: string) => {
+    onChangeText(text);
+  }, [onChangeText]);
 
   const getContainerStyle = (): ViewStyle => {
     const baseStyle: ViewStyle[] = [styles.container];
@@ -84,33 +94,6 @@ export const Input: React.FC<InputProps> = ({
   const getInputContainerStyle = (): ViewStyle => {
     const baseStyle: ViewStyle[] = [styles.inputContainer];
     
-    // Variant styles
-    switch (variant) {
-      case 'default':
-        baseStyle.push(styles.defaultInput);
-        break;
-      case 'outlined':
-        baseStyle.push(styles.outlinedInput);
-        break;
-      case 'filled':
-        baseStyle.push(styles.filledInput);
-        break;
-    }
-    
-    // Size styles
-    switch (size) {
-      case 'small':
-        baseStyle.push(styles.smallInput);
-        break;
-      case 'medium':
-        baseStyle.push(styles.mediumInput);
-        break;
-      case 'large':
-        baseStyle.push(styles.largeInput);
-        break;
-    }
-    
-    // State styles
     if (isFocused) {
       baseStyle.push(styles.focusedInput);
     }
@@ -127,35 +110,7 @@ export const Input: React.FC<InputProps> = ({
   };
 
   const getTextInputStyle = (): TextStyle => {
-    const baseStyle: TextStyle[] = [styles.textInput];
-    
-    // Size styles
-    switch (size) {
-      case 'small':
-        baseStyle.push(styles.smallText);
-        break;
-      case 'medium':
-        baseStyle.push(styles.mediumText);
-        break;
-      case 'large':
-        baseStyle.push(styles.largeText);
-        break;
-    }
-    
-    // State styles
-    if (disabled) {
-      baseStyle.push(styles.disabledText);
-    }
-    
-    if (leftIcon) {
-      baseStyle.push(styles.textWithLeftIcon);
-    }
-    
-    if (rightIcon) {
-      baseStyle.push(styles.textWithRightIcon);
-    }
-    
-    return StyleSheet.flatten([baseStyle, inputStyle]);
+    return StyleSheet.flatten([styles.textInput, inputStyle]);
   };
 
   return (
@@ -175,9 +130,10 @@ export const Input: React.FC<InputProps> = ({
         )}
         
         <TextInput
+          ref={ref}
           style={getTextInputStyle()}
           value={value}
-          onChangeText={onChangeText}
+          onChangeText={handleChangeText}
           placeholder={placeholder}
           placeholderTextColor="#9E9E9E"
           secureTextEntry={secureTextEntry}
@@ -189,6 +145,15 @@ export const Input: React.FC<InputProps> = ({
           editable={!disabled}
           onFocus={handleFocus}
           onBlur={handleBlur}
+          returnKeyType={returnKeyType}
+          onSubmitEditing={onSubmitEditing}
+          blurOnSubmit={blurOnSubmit}
+          textContentType={Platform.OS === 'ios' ? textContentType : undefined}
+          textAlignVertical="center"
+          autoCorrect={false}
+          spellCheck={false}
+          selectionColor="#2E7D32"
+          cursorColor="#2E7D32"
         />
         
         {rightIcon && (
@@ -197,7 +162,11 @@ export const Input: React.FC<InputProps> = ({
             onPress={onRightIconPress}
             disabled={!onRightIconPress}
           >
-            {rightIcon}
+            {typeof rightIcon === 'string' ? (
+              <Text style={styles.iconText}>{rightIcon}</Text>
+            ) : (
+              rightIcon
+            )}
           </TouchableOpacity>
         )}
       </View>
@@ -207,7 +176,7 @@ export const Input: React.FC<InputProps> = ({
       )}
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -236,6 +205,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 8,
     backgroundColor: '#FFFFFF',
+    height: 48,
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
   },
   // Variant styles
   defaultInput: {
@@ -254,25 +226,20 @@ const styles = StyleSheet.create({
   },
   // Size styles
   smallInput: {
-    minHeight: 36,
+    height: 40,
     paddingHorizontal: 12,
   },
   mediumInput: {
-    minHeight: 44,
+    height: 48,
     paddingHorizontal: 16,
   },
   largeInput: {
-    minHeight: 52,
+    height: 56,
     paddingHorizontal: 20,
   },
   // State styles
   focusedInput: {
     borderColor: '#2E7D32',
-    shadowColor: '#2E7D32',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
   },
   errorInput: {
     borderColor: '#D32F2F',
@@ -286,7 +253,9 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     color: '#1A1A1A',
-    paddingVertical: 0,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    textAlignVertical: 'center',
   },
   // Text size styles
   smallText: {
@@ -312,12 +281,18 @@ const styles = StyleSheet.create({
     marginRight: 8,
     alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal: 8,
   },
   rightIconContainer: {
     marginLeft: 8,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 4,
+    padding: 8,
+    minWidth: 40,
+  },
+  iconText: {
+    fontSize: 20,
+    color: '#666666',
   },
   errorText: {
     fontSize: 12,

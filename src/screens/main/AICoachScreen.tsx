@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  ScrollView,
   TouchableOpacity,
   TextInput,
   FlatList,
@@ -27,7 +26,7 @@ interface AICoachScreenProps {
 
 type TabType = 'insights' | 'recommendations' | 'chat';
 
-export const AICoachScreen: React.FC<AICoachScreenProps> = ({ navigation }) => {
+export const AICoachScreen: React.FC<AICoachScreenProps> = ({ navigation: _navigation }) => {
   const [activeTab, setActiveTab] = useState<TabType>('insights');
   const [insights, setInsights] = useState<AIInsight[]>([]);
   const [recommendations, setRecommendations] = useState<AIRecommendationType[]>([]);
@@ -105,11 +104,11 @@ export const AICoachScreen: React.FC<AICoachScreenProps> = ({ navigation }) => {
     }
   };
 
-  const handleInsightAction = (insight: AIInsight) => {
+  const handleInsightAction = (_insight: AIInsight) => {
     Alert.alert('AI Insight', 'Action will be implemented soon');
   };
 
-  const handleRecommendationAction = (recommendation: AIRecommendationType) => {
+  const handleRecommendationAction = (_recommendation: AIRecommendationType) => {
     Alert.alert('AI Recommendation', 'Action will be implemented soon');
   };
 

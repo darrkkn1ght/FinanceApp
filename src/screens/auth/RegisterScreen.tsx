@@ -1,20 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { 
   View, 
   Text, 
   StyleSheet, 
   TouchableOpacity, 
-  ScrollView, 
-  KeyboardAvoidingView, 
-  Platform,
-  Alert 
+  Alert,
+  SafeAreaView,
+  ScrollView,
+  TextInput
 } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 
 import { Input } from '../../components/common/Input';
 import { Button } from '../../components/common/Button';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
-import { authService } from '../../services/api/authService';
+import { Icon } from '../../components/common/Icon';
+import { useAuth } from '../../context/AuthContext';
 import { AuthStackParamList } from '../../types/navigation';
 
 interface RegisterScreenProps {
@@ -49,6 +50,14 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) =>
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  
+  const firstNameRef = useRef<TextInput>(null);
+  const lastNameRef = useRef<TextInput>(null);
+  const emailRef = useRef<TextInput>(null);
+  const passwordRef = useRef<TextInput>(null);
+  const confirmPasswordRef = useRef<TextInput>(null);
+
+  const { register } = useAuth();
 
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData(prev => ({
@@ -105,28 +114,22 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) =>
     
     setLoading(true);
     try {
-      const response = await authService.register({
+      const success = await register({
         firstName: formData.firstName,
         lastName: formData.lastName,
         email: formData.email,
         password: formData.password,
+        confirmPassword: formData.confirmPassword,
+        acceptTerms: true,
       });
       
-      if (response.success) {
-        Alert.alert(
-          'Registration Successful!',
-          'Your account has been created successfully. You can now log in.',
-          [
-            {
-              text: 'OK',
-              onPress: () => navigation.navigate('Login'),
-            },
-          ]
-        );
+      if (success) {
+        // Navigation will be handled automatically by AuthNavigator
+        // based on the updated authentication state
       } else {
-        Alert.alert('Registration Failed', response.error || 'An error occurred');
+        Alert.alert('Registration Failed', 'An error occurred during registration');
       }
-    } catch (error) {
+    } catch (_error) {
       Alert.alert('Registration Failed', 'An unexpected error occurred');
     } finally {
       setLoading(false);
@@ -138,14 +141,11 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) =>
   };
 
   return (
-    <KeyboardAvoidingView 
-      style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
+    <SafeAreaView style={styles.container}>
       <ScrollView 
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
-        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
       >
         <View style={styles.header}>
           <Text style={styles.title}>Create Account</Text>
@@ -158,51 +158,82 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) =>
           <View style={styles.nameRow}>
             <View style={styles.nameField}>
               <Input
+                ref={firstNameRef}
                 placeholder="First Name"
                 value={formData.firstName}
                 onChangeText={(value) => handleInputChange('firstName', value)}
                 error={errors.firstName}
                 autoCapitalize="words"
+                returnKeyType="next"
+                onSubmitEditing={() => lastNameRef.current?.focus()}
+                blurOnSubmit={false}
               />
             </View>
             <View style={styles.nameField}>
               <Input
+                ref={lastNameRef}
                 placeholder="Last Name"
                 value={formData.lastName}
                 onChangeText={(value) => handleInputChange('lastName', value)}
                 error={errors.lastName}
                 autoCapitalize="words"
+                returnKeyType="next"
+                onSubmitEditing={() => emailRef.current?.focus()}
+                blurOnSubmit={false}
               />
             </View>
           </View>
 
           <Input
+            ref={emailRef}
             placeholder="Email Address"
             value={formData.email}
             onChangeText={(value) => handleInputChange('email', value)}
             error={errors.email}
             keyboardType="email-address"
             autoCapitalize="none"
+            returnKeyType="next"
+            onSubmitEditing={() => passwordRef.current?.focus()}
+            blurOnSubmit={false}
           />
 
           <Input
+            ref={passwordRef}
             placeholder="Password"
             value={formData.password}
             onChangeText={(value) => handleInputChange('password', value)}
             error={errors.password}
             secureTextEntry={!showPassword}
-            rightIcon={showPassword ? 'eye-off' : 'eye'}
+            rightIcon={
+              <Icon 
+                name={showPassword ? 'eye-off' : 'eye'} 
+                size={20} 
+                color="#757575" 
+              />
+            }
             onRightIconPress={() => setShowPassword(!showPassword)}
+            returnKeyType="next"
+            onSubmitEditing={() => confirmPasswordRef.current?.focus()}
+            blurOnSubmit={false}
           />
 
           <Input
+            ref={confirmPasswordRef}
             placeholder="Confirm Password"
             value={formData.confirmPassword}
             onChangeText={(value) => handleInputChange('confirmPassword', value)}
             error={errors.confirmPassword}
             secureTextEntry={!showConfirmPassword}
-            rightIcon={showConfirmPassword ? 'eye-off' : 'eye'}
+            rightIcon={
+              <Icon 
+                name={showConfirmPassword ? 'eye-off' : 'eye'} 
+                size={20} 
+                color="#757575" 
+              />
+            }
             onRightIconPress={() => setShowConfirmPassword(!showConfirmPassword)}
+            returnKeyType="done"
+            onSubmitEditing={handleRegister}
           />
 
           <Text style={styles.terms}>
@@ -234,7 +265,7 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) =>
           <LoadingSpinner size="large" />
         </View>
       )}
-    </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
@@ -251,6 +282,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingTop: 60,
     paddingBottom: 40,
+    minHeight: '100%',
   },
   header: {
     alignItems: 'center',
@@ -304,8 +336,6 @@ const styles = StyleSheet.create({
   footerText: {
     fontSize: 16,
     color: '#666666',
-    flexDirection: 'row',
-    alignItems: 'center',
   },
   loginLink: {
     color: '#2E7D32',

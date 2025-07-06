@@ -6,7 +6,8 @@ import {
   ScrollView, 
   TouchableOpacity, 
   Dimensions,
-  Image 
+  NativeSyntheticEvent,
+  NativeScrollEvent
 } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 
@@ -72,7 +73,7 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ navigation }
   const [currentSlide, setCurrentSlide] = useState(0);
   const scrollViewRef = useRef<ScrollView>(null);
 
-  const handleScroll = (event: any) => {
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const slideIndex = Math.round(event.nativeEvent.contentOffset.x / screenWidth);
     setCurrentSlide(slideIndex);
   };
@@ -126,7 +127,7 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ navigation }
         scrollEventThrottle={16}
         style={styles.scrollView}
       >
-        {onboardingSlides.map((slide, index) => (
+        {onboardingSlides.map((slide, _index) => (
           <View 
             key={slide.id} 
             style={[

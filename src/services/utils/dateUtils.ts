@@ -65,7 +65,7 @@ export interface DateRangeFilter {
         default:
           return date.toLocaleDateString('en-US');
       }
-    } catch (error) {
+    } catch (_error) {
       return 'Invalid Date';
     }
   };
@@ -88,7 +88,7 @@ export interface DateRangeFilter {
       } else {
         return formatDate(dateString, 'short');
       }
-    } catch (error) {
+    } catch (_error) {
       return formatDate(dateString, 'short');
     }
   };
@@ -101,18 +101,20 @@ export interface DateRangeFilter {
     const startDate = new Date(now);
     
     switch (period) {
-      case 'week':
+      case 'week': {
         const dayOfWeek = now.getDay();
         startDate.setDate(now.getDate() - dayOfWeek);
         break;
+      }
       case 'month':
         startDate.setDate(1);
         break;
-      case 'quarter':
+      case 'quarter': {
         const currentMonth = now.getMonth();
         const quarterStartMonth = Math.floor(currentMonth / 3) * 3;
         startDate.setMonth(quarterStartMonth, 1);
         break;
+      }
       case 'year':
         startDate.setMonth(0, 1);
         break;
@@ -162,7 +164,7 @@ export interface DateRangeFilter {
       const end = new Date(endDate);
       
       return date >= start && date <= end;
-    } catch (error) {
+    } catch (_error) {
       return false;
     }
   };
@@ -201,7 +203,7 @@ export interface DateRangeFilter {
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       
       return diffDays;
-    } catch (error) {
+    } catch (_error) {
       return 0;
     }
   };
@@ -217,7 +219,7 @@ export interface DateRangeFilter {
         minute: '2-digit',
         hour12: true,
       });
-    } catch (error) {
+    } catch (_error) {
       return '';
     }
   };
