@@ -1,8 +1,6 @@
-import { Alert, Linking, Platform } from 'react-native';
+import { Alert, Linking } from 'react-native';
 import * as Notifications from 'expo-notifications';
-import * as Location from 'expo-location';
 import * as ImagePicker from 'expo-image-picker';
-import * as Contacts from 'expo-contacts';
 import { Camera } from 'expo-camera';
 
 export interface PermissionStatus {
@@ -40,7 +38,7 @@ class PermissionManager {
       }
       
       return result;
-    } catch (error) {
+    } catch (_error) {
       return {
         success: false,
         status: {
@@ -57,34 +55,18 @@ class PermissionManager {
    * Request location permissions
    */
   async requestLocationPermission(): Promise<PermissionResult> {
-    try {
-      const { status, canAskAgain } = await Location.requestForegroundPermissionsAsync();
-      
-      const result: PermissionResult = {
-        success: status === 'granted',
-        status: {
-          granted: status === 'granted',
-          canAskAgain,
-          status,
-        },
-      };
-      
-      if (status !== 'granted') {
-        result.message = 'Location permissions help us categorize transactions based on merchant locations.';
-      }
-      
-      return result;
-    } catch (error) {
-      return {
-        success: false,
-        status: {
-          granted: false,
-          canAskAgain: false,
-          status: 'error',
-        },
-        message: 'Failed to request location permissions',
-      };
-    }
+    // Location permissions not available - return mock result
+    const result: PermissionResult = {
+      success: false,
+      status: {
+        granted: false,
+        canAskAgain: false,
+        status: 'unavailable',
+      },
+      message: 'Location permissions are not available in this version.',
+    };
+    
+    return result;
   }
 
   /**
@@ -108,7 +90,7 @@ class PermissionManager {
       }
       
       return result;
-    } catch (error) {
+    } catch (_error) {
       return {
         success: false,
         status: {
@@ -142,7 +124,7 @@ class PermissionManager {
       }
       
       return result;
-    } catch (error) {
+    } catch (_error) {
       return {
         success: false,
         status: {
@@ -159,34 +141,18 @@ class PermissionManager {
    * Request contacts permissions
    */
   async requestContactsPermission(): Promise<PermissionResult> {
-    try {
-      const { status, canAskAgain } = await Contacts.requestPermissionsAsync();
-      
-      const result: PermissionResult = {
-        success: status === 'granted',
-        status: {
-          granted: status === 'granted',
-          canAskAgain,
-          status,
-        },
-      };
-      
-      if (status !== 'granted') {
-        result.message = 'Contacts access helps us identify payments to friends and family.';
-      }
-      
-      return result;
-    } catch (error) {
-      return {
-        success: false,
-        status: {
-          granted: false,
-          canAskAgain: false,
-          status: 'error',
-        },
-        message: 'Failed to request contacts permissions',
-      };
-    }
+    // Contacts permissions not available - return mock result
+    const result: PermissionResult = {
+      success: false,
+      status: {
+        granted: false,
+        canAskAgain: false,
+        status: 'unavailable',
+      },
+      message: 'Contacts permissions are not available in this version.',
+    };
+    
+    return result;
   }
 
   /**
@@ -205,12 +171,8 @@ class PermissionManager {
    * Check if location permissions are granted
    */
   async checkLocationPermission(): Promise<boolean> {
-    try {
-      const { status } = await Location.getForegroundPermissionsAsync();
-      return status === 'granted';
-    } catch {
-      return false;
-    }
+    // Location permissions not available
+    return false;
   }
 
   /**
@@ -241,36 +203,35 @@ class PermissionManager {
    * Check if contacts permissions are granted
    */
   async checkContactsPermission(): Promise<boolean> {
-    try {
-      const { status } = await Contacts.getPermissionsAsync();
-      return status === 'granted';
-    } catch {
-      return false;
-    }
+    // Contacts permissions not available
+    return false;
   }
 
   /**
-   * Show permission denied alert with settings option
+   * Show alert when permission is denied
    */
   showPermissionDeniedAlert(
     title: string = 'Permission Required',
     message: string = 'This permission is required for the app to work properly.',
     showSettings: boolean = true
   ): void {
-    const buttons = [
-      {
-        text: 'Cancel',
-        style: 'cancel' as const,
-      },
-    ];
-
-    if (showSettings) {
-      buttons.push({
-        text: 'Settings',
-        style: 'default' as const,
-        onPress: () => this.openAppSettings(),
-      });
-    }
+    const buttons = showSettings
+      ? [
+          {
+            text: 'Cancel',
+            style: 'cancel' as const,
+          },
+          {
+            text: 'Open Settings',
+            onPress: () => this.openAppSettings(),
+          },
+        ]
+      : [
+          {
+            text: 'OK',
+            style: 'default' as const,
+          },
+        ];
 
     Alert.alert(title, message, buttons);
   }
@@ -280,18 +241,14 @@ class PermissionManager {
    */
   async openAppSettings(): Promise<void> {
     try {
-      if (Platform.OS === 'ios') {
-        await Linking.openURL('app-settings:');
-      } else {
-        await Linking.openSettings();
-      }
-    } catch (error) {
-      console.error('Failed to open app settings:', error);
+      await Linking.openSettings();
+    } catch (_error) {
+      console.error('Failed to open app settings');
     }
   }
 
   /**
-   * Request all essential permissions at once
+   * Request essential permissions for the app
    */
   async requestEssentialPermissions(): Promise<{
     notifications: PermissionResult;
@@ -339,7 +296,7 @@ class PermissionManager {
   }
 
   /**
-   * Show permission explanation before requesting
+   * Show permission explanation dialog
    */
   showPermissionExplanation(
     title: string,
@@ -347,28 +304,25 @@ class PermissionManager {
     onConfirm: () => void,
     onCancel?: () => void
   ): void {
-    Alert.alert(
-      title,
-      message,
-      [
-        {
-          text: 'Not Now',
-          style: 'cancel',
-          onPress: onCancel,
-        },
-        {
-          text: 'Allow',
-          style: 'default',
-          onPress: onConfirm,
-        },
-      ]
-    );
+    const buttons = [
+      {
+        text: 'Cancel',
+        style: 'cancel' as const,
+        onPress: onCancel,
+      },
+      {
+        text: 'Allow',
+        style: 'default' as const,
+        onPress: onConfirm,
+      },
+    ];
+
+    Alert.alert(title, message, buttons);
   }
 }
 
 export const permissionManager = new PermissionManager();
 
-// Export commonly used permission types
 export type PermissionType = 
   | 'notifications'
   | 'location'
