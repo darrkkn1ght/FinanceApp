@@ -53,10 +53,10 @@ export const StatCard: React.FC<StatCardProps> = ({
     }
   };
 
-  const getCardBackground = (): string => {
+  const getIconBackground = (): string => {
     const iconColor = getIconColor();
-    // Create a subtle gradient-like effect
-    return `${iconColor}03`; // Extremely light background
+    // Create a subtle gradient-like effect with very light background
+    return `${iconColor}08`; // Very light background
   };
 
   const getTrendColor = (): string => {
@@ -68,6 +68,11 @@ export const StatCard: React.FC<StatCardProps> = ({
       default:
         return '#6B7280';
     }
+  };
+
+  const getTrendBackground = (): string => {
+    const trendColor = getTrendColor();
+    return `${trendColor}08`; // Very light background
   };
 
   const getTrendIcon = (): string => {
@@ -91,16 +96,17 @@ export const StatCard: React.FC<StatCardProps> = ({
     return (
       <View style={styles.sparklineContainer}>
         {sparklineData.map((point, index) => {
-          const height = range > 0 ? ((point - minValue) / range) * 24 : 12;
+          const height = range > 0 ? ((point - minValue) / range) * 20 : 10;
+          const opacity = 0.3 + (index / sparklineData.length) * 0.7; // Gradient effect
           return (
             <View
               key={index}
               style={[
                 styles.sparklineBar,
                 {
-                  height: Math.max(height, 3),
+                  height: Math.max(height, 2),
                   backgroundColor: getIconColor(),
-                  opacity: 0.8 + (index / sparklineData.length) * 0.2, // Fade effect
+                  opacity: opacity,
                 }
               ]}
             />
@@ -115,8 +121,8 @@ export const StatCard: React.FC<StatCardProps> = ({
       style={[
         styles.container,
         { 
-          backgroundColor: getCardBackground(),
-          borderColor: `${getIconColor()}15`
+          backgroundColor: '#FFFFFF',
+          borderColor: '#F3F4F6'
         }
       ]}
       onPress={onPress}
@@ -127,21 +133,26 @@ export const StatCard: React.FC<StatCardProps> = ({
       <View style={styles.header}>
         <View style={[
           styles.iconContainer,
-          { backgroundColor: getIconColor() }
+          { backgroundColor: getIconBackground() }
         ]}>
           <Icon 
             name={icon} 
-            size={18} 
-            color="#FFFFFF" 
+            size={20} 
+            color={getIconColor()} 
           />
         </View>
         
         {trend !== 'stable' && (
           <View style={[
             styles.trendContainer,
-            { backgroundColor: getTrendColor() }
+            { backgroundColor: getTrendBackground() }
           ]}>
-            <Text style={styles.trendIcon}>{getTrendIcon()}</Text>
+            <Text style={[
+              styles.trendIcon,
+              { color: getTrendColor() }
+            ]}>
+              {getTrendIcon()}
+            </Text>
           </View>
         )}
       </View>
@@ -149,10 +160,7 @@ export const StatCard: React.FC<StatCardProps> = ({
       {/* Main content */}
       <View style={styles.content}>
         <Text style={styles.title}>{title}</Text>
-        <Text style={[
-          styles.value,
-          { color: getIconColor() }
-        ]}>
+        <Text style={styles.value}>
           {formatCurrency(value)}
         </Text>
         
@@ -161,10 +169,13 @@ export const StatCard: React.FC<StatCardProps> = ({
           <View style={styles.changeContainer}>
             <View style={[
               styles.changeBadge,
-              { backgroundColor: getTrendColor() }
+              { backgroundColor: getTrendBackground() }
             ]}>
               {changePercentage !== undefined && (
-                <Text style={styles.changePercentage}>
+                <Text style={[
+                  styles.changePercentage,
+                  { color: getTrendColor() }
+                ]}>
                   {changePercentage > 0 ? '+' : ''}{changePercentage.toFixed(1)}%
                 </Text>
               )}
@@ -184,17 +195,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    padding: 20,
-    borderRadius: 20,
+    padding: 24,
+    borderRadius: 16,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 4,
+      height: 2,
     },
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
-    elevation: 4,
-    minHeight: 140,
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
+    elevation: 2,
+    minHeight: 160,
     borderWidth: 1,
     borderColor: '#F3F4F6',
   },
@@ -202,91 +213,74 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: 16,
+    marginBottom: 20,
   },
   iconContainer: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
+    width: 48,
+    height: 48,
+    borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
   },
   trendContainer: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
+    width: 32,
+    height: 32,
+    borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 1,
   },
   trendIcon: {
-    color: '#FFFFFF',
-    fontSize: 14,
-    fontWeight: 'bold',
+    fontSize: 16,
+    fontWeight: '600',
   },
   content: {
     flex: 1,
   },
   title: {
-    fontSize: 13,
+    fontSize: 12,
     color: '#6B7280',
-    marginBottom: 6,
-    fontWeight: '500',
+    marginBottom: 8,
+    fontWeight: '600',
     textTransform: 'uppercase',
-    letterSpacing: 0.5,
+    letterSpacing: 0.8,
   },
   value: {
-    fontSize: 28,
-    fontWeight: '800',
-    marginBottom: 12,
+    fontSize: 32,
+    fontWeight: '700',
+    color: '#111827',
+    marginBottom: 16,
     letterSpacing: -0.5,
   },
   changeContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: 16,
   },
   changeBadge: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
-    marginRight: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 8,
+    marginRight: 10,
   },
   changePercentage: {
-    fontSize: 11,
-    fontWeight: '700',
-    color: '#FFFFFF',
+    fontSize: 12,
+    fontWeight: '600',
   },
   changeLabel: {
-    fontSize: 11,
+    fontSize: 12,
     color: '#9CA3AF',
     fontWeight: '500',
   },
   sparklineContainer: {
     flexDirection: 'row',
     alignItems: 'flex-end',
-    height: 28,
-    gap: 3,
-    marginTop: 8,
+    height: 24,
+    gap: 4,
+    marginTop: 12,
   },
   sparklineBar: {
     flex: 1,
     borderRadius: 2,
-    minHeight: 3,
+    minHeight: 2,
   },
 }); 
